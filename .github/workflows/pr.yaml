@@ -1,0 +1,38 @@
+name: Pull Request Validation
+
+on:
+  pull_request:
+    types:
+      - opened
+      - edited
+      - synchronize
+
+permissions:
+  contents: read
+  actions: read
+  checks: write
+
+env:
+  DOTNET_VERSION: '6.x'
+
+jobs:
+  
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup dotnet
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+      - name: Build
+        run: DOTNET_CLI_TELEMETRY_OPTOUT=1 DOTNET_NOLOGO=true dotnet build -m -graph -c Release
+      - name: Test
+        run: DOTNET_CLI_TELEMETRY_OPTOUT=1 DOTNET_NOLOGO=true dotnet test -c Release --no-build --no-restore -v q --logger "trx;LogFileName=$project.trx" || error=true
+      - name: Report tests results
+        uses: dorny/test-reporter@v1
+        with:
+          name: 'Tests report'
+          path: '**/*.trx'
+          reporter: dotnet-trx
+          fail-on-error: true

@@ -1,0 +1,64 @@
+name: 'Package and Push .NET projects'
+description: 'Packages .NET project and pushes them to a NuGet source'
+
+
+inputs:
+  projects_to_package:
+    description: 'Projects to package'
+    required: true
+  package_version:
+    description: 'Version of the package'
+    required: true
+  dotnet_version:
+    description: 'Dotnet version to use'
+    required: true
+  nuget_source:
+    description: 'NuGet source to push the packages to'
+    required: false
+    default: 'https://api.nuget.org/v3/index.json'
+  nuget_api_key:
+    description: 'NuGet api key'
+    required: true
+
+
+outputs:
+  packages_folder:
+    description: 'Folder where the packages were created'
+    value: ${{ steps.package.outputs.packages_folder }}
+
+runs:
+  using: composite
+  steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+    - name: Setup dotnet
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: ${{ inputs.dotnet_version }}
+
+    - name: Package projects
+      id: 'package'
+      shell: bash
+      run: |
+        packages_folder="./release"
+        echo "packages_folder=${packages_folder}" >> $GITHUB_OUTPUT
+        projects=($(echo "${{ inputs.projects_to_package }}" | tr -d ' '))
+        for project in "${projects[@]}"; do
+          echo "Packaging project: ${project}" 
+          dotnet pack ${project} --force \
+              --configuration Release \
+              --verbosity minimal \
+              --output "${packages_folder}" \
+              -p:VersionPrefix="${{inputs.package_version}}" \
+              -p:ContinuousIntegrationBuild=true
+        done
+
+    - name: Publish the packages
+      shell: bash
+      run: |
+        for package in ${{steps.package.outputs.packages_folder}}/*.nupkg; do
+          dotnet nuget push "${package}" \
+              --api-key ${{inputs.nuget_api_key}} \
+              --source "${{inputs.nuget_source}}"
+        done
+

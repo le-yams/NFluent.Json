@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NFluent.Json", "NFluent.Json\NFluent.Json.csproj", "{874500FD-DE10-47C4-BD58-1A73B4DBE7AD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NFluent.Json.Tests", "NFluent.Json.Tests\NFluent.Json.Tests.csproj", "{2A1C4203-E5FF-465E-B1C1-B951A0FDA5B1}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{874500FD-DE10-47C4-BD58-1A73B4DBE7AD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{874500FD-DE10-47C4-BD58-1A73B4DBE7AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{874500FD-DE10-47C4-BD58-1A73B4DBE7AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{874500FD-DE10-47C4-BD58-1A73B4DBE7AD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2A1C4203-E5FF-465E-B1C1-B951A0FDA5B1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2A1C4203-E5FF-465E-B1C1-B951A0FDA5B1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2A1C4203-E5FF-465E-B1C1-B951A0FDA5B1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2A1C4203-E5FF-465E-B1C1-B951A0FDA5B1}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

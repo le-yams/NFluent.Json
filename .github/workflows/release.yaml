@@ -1,0 +1,63 @@
+name: Release Workflow
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+  pull-requests: write
+
+
+env:
+  DOTNET_VERSION: '6.x'
+
+jobs:
+  
+  release-please:
+    runs-on: ubuntu-latest
+    name: Release please
+    steps:
+      - uses: googleapis/release-please-action@v4
+        id: release
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          target-branch: main
+          config-file: .release/release-please-config.json
+          manifest-file: .release/release-please-manifest.json
+    outputs:
+      releases_created: ${{ steps.release.outputs.releases_created }}
+      tag_name: ${{ steps.release.outputs.tag_name }}
+  
+  publish:
+    name: Package and Publish packages
+    runs-on: ubuntu-latest
+    needs:
+      - release-please
+    if: needs.release-please.outputs.releases_created == 'true'
+    steps:
+      - uses: actions/checkout@v4
+      - name: Trim tag to get dotnet version
+        id: 'dotnet-version'
+        run: |
+          tag=${{needs.release-please.outputs.tag_name}}
+          version=${tag#"v"}
+          echo "version=${version}" >> $GITHUB_OUTPUT
+      - name: Package and Publish
+        id: 'package'
+        uses: ./.github/actions/publish
+        with:
+          dotnet_version: ${{ env.DOTNET_VERSION }}
+          projects_to_package: |
+            NFluent.Json
+          package_version: ${{steps.dotnet-version.outputs.version}}
+          nuget_api_key: ${{ secrets.NUGET_API_KEY }}
+
+      - name: Update release assets
+        uses: softprops/action-gh-release@v2
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          tag_name: ${{needs.release-please.outputs.tag_name}}
+          files: |
+            ${{steps.package.outputs.packages_folder}}/NFluent.Json.${{steps.dotnet-version.outputs.version}}.nupkg
