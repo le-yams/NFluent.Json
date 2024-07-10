@@ -35,7 +35,8 @@ Check.That(jsonElement).HasProperty("foo", JsonValueKind.String);
 ## Check the presence and value of a property
 
 ```c#
-Check.That(jsonElement).HasStringProperty("foo", "value");
-Check.That(jsonElement).HasBoolProperty("foo", expectedValue: true);
-Check.That(jsonElement).HasIntProperty("foo", 42);
+Check.That(jsonElement).HasStringProperty("stringProperty", "value");
+Check.That(jsonElement).HasBoolProperty("boolProperty", expectedValue: true);
+Check.That(jsonElement).HasIntProperty("intProperty", 42);
+Check.That(jsonElement).HasNullProperty("nullProperty");
 ```
