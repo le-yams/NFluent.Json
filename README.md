@@ -37,4 +37,5 @@ Check.That(jsonElement).HasProperty("foo", JsonValueKind.String);
 ```c#
 Check.That(jsonElement).HasStringProperty("foo", "value");
 Check.That(jsonElement).HasBoolProperty("foo", expectedValue: true);
+Check.That(jsonElement).HasIntProperty("foo", 42);
 ```
