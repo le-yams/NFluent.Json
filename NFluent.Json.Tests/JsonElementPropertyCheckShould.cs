@@ -1,7 +1,5 @@
 using System.Text.Json;
-using NFluent;
 using NFluent.Helpers;
-using NFluent.Json;
 using Xunit;
 
 namespace NFluent.Json.Tests;

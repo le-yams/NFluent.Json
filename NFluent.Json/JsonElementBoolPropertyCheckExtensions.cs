@@ -1,6 +1,5 @@
 ﻿using System.Text.Json;
 using NFluent.Extensibility;
-using NFluent.Json.Internal;
 using NFluent.Kernel;
 
 namespace NFluent.Json;

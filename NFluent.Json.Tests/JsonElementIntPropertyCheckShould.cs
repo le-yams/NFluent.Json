@@ -1,6 +1,4 @@
-using NFluent;
 using NFluent.Helpers;
-using NFluent.Json;
 using Xunit;
 
 namespace NFluent.Json.Tests;
@@ -73,8 +71,8 @@ public class JsonElementIntPropertyCheckShould
     [Fact]
     public async Task HasIntPropertyCanBeNegateWithWrongPropertyValue()
     {
-        const int expectedValue = 42;
-        const int notExpectedValue = expectedValue + 1;
+        const int expectedValue = int.MaxValue;
+        const int notExpectedValue = expectedValue - 1;
         var json = await TestJson.Element(new { propA = notExpectedValue });
 
         Check.That(json).Not.HasIntProperty("propA", expectedValue);
@@ -85,7 +83,7 @@ public class JsonElementIntPropertyCheckShould
     {
         const int expectedValue = 42;
         var json = await TestJson.Element(new { propA = expectedValue });
-    
+
         Check.ThatCode(() => Check.That(json).Not.HasIntProperty("propA", expectedValue)).IsAFailingCheckWithMessage(
             "",
             $"The property 'propA' is present and has value '{expectedValue}' whereas it must not.",
