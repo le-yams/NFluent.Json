@@ -89,7 +89,7 @@ public class JsonElementArrayValueCheckShould
     }
 
     [Fact]
-    public async Task HasArrayValueFailingWhenPropertyIsWrongKing()
+    public async Task HasArrayValueFailingWhenPropertyIsWrongKind()
     {
         var expectedValue = new[] { 1, 2 };
         var json = await TestJson.Element(new { prop = "42" });
@@ -114,7 +114,7 @@ public class JsonElementArrayValueCheckShould
     }
 
     [Fact]
-    public async Task HasArrayValueNegationFailingWhenPropertyIsOfSpecifiedKing()
+    public async Task HasArrayValueNegationFailingWhenPropertyIsOfSpecifiedKind()
     {
         var expectedValue = new[] { 1, 2 };
         var json = await TestJson.Element(new { prop = expectedValue });

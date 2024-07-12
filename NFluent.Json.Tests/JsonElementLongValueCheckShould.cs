@@ -31,7 +31,7 @@ public class JsonElementLongValueCheckShould
     }
 
     [Fact]
-    public async Task HasLongValueFailingWhenPropertyIsWrongKing()
+    public async Task HasLongValueFailingWhenPropertyIsWrongKind()
     {
         const int expectedValue = 42;
         var json = await TestJson.Element(new { prop = "42" });
@@ -56,7 +56,7 @@ public class JsonElementLongValueCheckShould
     }
 
     [Fact]
-    public async Task HasLongValueNegationFailingWhenPropertyIsOfSpecifiedKing()
+    public async Task HasLongValueNegationFailingWhenPropertyIsOfSpecifiedKind()
     {
         const int expectedValue = 42;
         var json = await TestJson.Element(new { prop = expectedValue });

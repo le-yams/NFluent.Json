@@ -16,7 +16,7 @@ public class JsonElementNullValueCheckShould
     }
 
     [Fact]
-    public async Task HasNullValueFailingWhenPropertyIsWrongKing()
+    public async Task HasNullValueFailingWhenPropertyIsWrongKind()
     {
         var json = await TestJson.Element(new { prop = "42" });
 
@@ -39,7 +39,7 @@ public class JsonElementNullValueCheckShould
     }
 
     [Fact]
-    public async Task HasNullValueNegationFailingWhenPropertyIsOfSpecifiedKing()
+    public async Task HasNullValueNegationFailingWhenPropertyIsOfSpecifiedKind()
     {
         var json = await TestJson.Element(new { nullProp = (string)null! });
 

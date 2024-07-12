@@ -31,7 +31,7 @@ public class JsonElementBoolValueCheckShould
     }
 
     [Fact]
-    public async Task HasBoolValueFailingWhenPropertyIsWrongKing()
+    public async Task HasBoolValueFailingWhenPropertyIsWrongKind()
     {
         const bool expectedValue = true;
         var json = await TestJson.Element(new { prop = "42" });
@@ -56,7 +56,7 @@ public class JsonElementBoolValueCheckShould
     }
 
     [Fact]
-    public async Task HasBoolValueNegationFailingWhenPropertyIsOfSpecifiedKing()
+    public async Task HasBoolValueNegationFailingWhenPropertyIsOfSpecifiedKind()
     {
         const bool expectedValue = true;
         var json = await TestJson.Element(new { prop = expectedValue });
@@ -93,7 +93,7 @@ public class JsonElementBoolValueCheckShould
     }
 
     [Fact]
-    public async Task HasTrueValueFailingWhenPropertyIsWrongKing()
+    public async Task HasTrueValueFailingWhenPropertyIsWrongKind()
     {
         var json = await TestJson.Element(new { prop = "42" });
 
@@ -116,7 +116,7 @@ public class JsonElementBoolValueCheckShould
     }
 
     [Fact]
-    public async Task HasTrueValueNegationFailingWhenPropertyIsOfSpecifiedKing()
+    public async Task HasTrueValueNegationFailingWhenPropertyIsOfSpecifiedKind()
     {
         var json = await TestJson.Element(new { prop = true });
 
@@ -152,7 +152,7 @@ public class JsonElementBoolValueCheckShould
     }
 
     [Fact]
-    public async Task HasFalseValueFailingWhenPropertyIsWrongKing()
+    public async Task HasFalseValueFailingWhenPropertyIsWrongKind()
     {
         var json = await TestJson.Element(new { prop = "42" });
 
@@ -175,7 +175,7 @@ public class JsonElementBoolValueCheckShould
     }
 
     [Fact]
-    public async Task HasFalseValueNegationFailingWhenPropertyIsOfSpecifiedKing()
+    public async Task HasFalseValueNegationFailingWhenPropertyIsOfSpecifiedKind()
     {
         var json = await TestJson.Element(new { prop = false });
 
