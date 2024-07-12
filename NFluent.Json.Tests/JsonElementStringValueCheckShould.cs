@@ -31,7 +31,7 @@ public class JsonElementStringValueCheckShould
     }
 
     [Fact]
-    public async Task HasStringValueFailingWhenPropertyIsWrongKing()
+    public async Task HasStringValueFailingWhenPropertyIsWrongKind()
     {
         const string expectedValue = "42";
         var json = await TestJson.Element(new { numberProp = 42 });
@@ -56,7 +56,7 @@ public class JsonElementStringValueCheckShould
     }
 
     [Fact]
-    public async Task HasStringValueNegationFailingWhenPropertyIsOfSpecifiedKing()
+    public async Task HasStringValueNegationFailingWhenPropertyIsOfSpecifiedKind()
     {
         const string expectedValue = "42";
         var json = await TestJson.Element(new { stringProp = expectedValue });

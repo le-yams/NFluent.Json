@@ -73,7 +73,7 @@ public class JsonElementPropertyCheckShould
     }
 
     [Fact]
-    public async Task HasPropertyWithKindFailingWhenPropertyHasWrongKing()
+    public async Task HasPropertyWithKindFailingWhenPropertyHasWrongKind()
     {
         var json = await TestJson.Element(new { prop = "" });
 
@@ -97,7 +97,7 @@ public class JsonElementPropertyCheckShould
     }
 
     [Fact]
-    public async Task HasPropertyWithKindNegationFailingWhenPropertyHasWrongKing()
+    public async Task HasPropertyWithKindNegationFailingWhenPropertyHasWrongKind()
     {
         var json = await TestJson.Element(new { stringProp = "" });
 

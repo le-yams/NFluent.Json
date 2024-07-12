@@ -99,7 +99,7 @@ public class JsonElementArrayValueEquivalentToCheckShould
     }
 
     [Fact]
-    public async Task HasArrayValueEquivalentToFailingWhenPropertyIsWrongKing()
+    public async Task HasArrayValueEquivalentToFailingWhenPropertyIsWrongKind()
     {
         var expectedValue = new[] { 1, 2 };
         var json = await TestJson.Element(new { prop = "42" });
@@ -128,7 +128,7 @@ public class JsonElementArrayValueEquivalentToCheckShould
     [Theory]
     [InlineData(new[] { 1, 2 }, new[] { 1, 2 })]
     [InlineData(new[] { 1, 2 }, new[] { 2, 1 })]
-    public async Task HasArrayValueEquivalentToNegationFailingWhenPropertyIsOfSpecifiedKing(int[] value, IEnumerable<int> equivalentValue)
+    public async Task HasArrayValueEquivalentToNegationFailingWhenPropertyIsOfSpecifiedKind(int[] value, IEnumerable<int> equivalentValue)
     {
         var json = await TestJson.Element(new { prop = value });
 
