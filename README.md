@@ -12,10 +12,10 @@
 Check.That(jsonElement1).HasNullValue();
 Check.That(jsonElement2).HasStringValue("foo");
 Check.That(jsonElement3).HasIntValue(42);
-Check.That(jsonElement3).HasLongValue(2147483648);
-Check.That(jsonElement4).HasBoolValue(true);
-Check.That(jsonElement5).HasTrueValue();
-Check.That(jsonElement6).HasFalseValue();
+Check.That(jsonElement4).HasLongValue(2147483648);
+Check.That(jsonElement5).HasBoolValue(true);
+Check.That(jsonElement6).HasTrueValue();
+Check.That(jsonElement7).HasFalseValue();
 ```
 
 

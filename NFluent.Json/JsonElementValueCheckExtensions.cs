@@ -1,4 +1,4 @@
-﻿using System.Text.Json;
+using System.Text.Json;
 using NFluent.Extensibility;
 using NFluent.Kernel;
 
@@ -30,7 +30,7 @@ public static class JsonElementValueCheckExtensions
     /// <returns>
     /// A check link.
     /// </returns>
-    /// <exception cref="FluentCheckException">The actual element value is equal to the specified one.</exception>
+    /// <exception cref="FluentCheckException">The actual element value is not equal to the specified one.</exception>
     public static ICheckLink<ICheck<JsonElement>> HasStringValue(this ICheck<JsonElement> check, string expectedValue)
     {
         ExtensibilityHelper.BeginCheck(check)
@@ -50,7 +50,7 @@ public static class JsonElementValueCheckExtensions
     /// <returns>
     /// A check link.
     /// </returns>
-    /// <exception cref="FluentCheckException">The actual element value is equal to the specified one.</exception>
+    /// <exception cref="FluentCheckException">The actual element value is not equal to the specified one.</exception>
     public static ICheckLink<ICheck<JsonElement>> HasIntValue(this ICheck<JsonElement> check, int expectedValue)
     {
         ExtensibilityHelper.BeginCheck(check)
@@ -70,7 +70,7 @@ public static class JsonElementValueCheckExtensions
     /// <returns>
     /// A check link.
     /// </returns>
-    /// <exception cref="FluentCheckException">The actual element value is equal to the specified one.</exception>
+    /// <exception cref="FluentCheckException">The actual element value is not equal to the specified one.</exception>
     public static ICheckLink<ICheck<JsonElement>> HasLongValue(this ICheck<JsonElement> check, long expectedValue)
     {
         ExtensibilityHelper.BeginCheck(check)
@@ -91,7 +91,7 @@ public static class JsonElementValueCheckExtensions
     /// <returns>
     /// A check link.
     /// </returns>
-    /// <exception cref="FluentCheckException">The actual element value is equal to the specified one.</exception>
+    /// <exception cref="FluentCheckException">The actual element value is not equal to the specified one.</exception>
     public static ICheckLink<ICheck<JsonElement>> HasBoolValue(this ICheck<JsonElement> check, bool expectedValue)
     {
         ExtensibilityHelper.BeginCheck(check)
@@ -110,7 +110,7 @@ public static class JsonElementValueCheckExtensions
     /// <returns>
     /// A check link.
     /// </returns>
-    /// <exception cref="FluentCheckException">The actual element value is true.</exception>
+    /// <exception cref="FluentCheckException">The actual element value is false.</exception>
     public static ICheckLink<ICheck<JsonElement>> HasTrueValue(this ICheck<JsonElement> check)
     {
         return check.HasBoolValue(true);
@@ -123,7 +123,7 @@ public static class JsonElementValueCheckExtensions
     /// <returns>
     /// A check link.
     /// </returns>
-    /// <exception cref="FluentCheckException">The actual element value is false.</exception>
+    /// <exception cref="FluentCheckException">The actual element value is true.</exception>
     public static ICheckLink<ICheck<JsonElement>> HasFalseValue(this ICheck<JsonElement> check)
     {
         return check.HasBoolValue(false);
