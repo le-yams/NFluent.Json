@@ -12,6 +12,7 @@
 Check.That(jsonElement1).HasNullValue();
 Check.That(jsonElement2).HasStringValue("foo");
 Check.That(jsonElement3).HasIntValue(42);
+Check.That(jsonElement3).HasLongValue(2147483648);
 Check.That(jsonElement4).HasBoolValue(true);
 Check.That(jsonElement5).HasTrueValue();
 Check.That(jsonElement6).HasFalseValue();
@@ -38,5 +39,6 @@ Check.That(jsonElement).HasProperty("foo", JsonValueKind.String);
 Check.That(jsonElement).HasStringProperty("stringProperty", "value");
 Check.That(jsonElement).HasBoolProperty("boolProperty", expectedValue: true);
 Check.That(jsonElement).HasIntProperty("intProperty", 42);
+Check.That(jsonElement).HasLongProperty("longProperty", 2147483648);
 Check.That(jsonElement).HasNullProperty("nullProperty");
 ```
