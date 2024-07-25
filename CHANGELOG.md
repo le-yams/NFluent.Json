@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.2](https://github.com/le-yams/NFluent.Json/compare/v1.2.1...v1.2.2) (2024-07-25)
+
+
+### Bug Fixes
+
+* not equivalent arrays fail message ([#12](https://github.com/le-yams/NFluent.Json/issues/12)) ([79154ee](https://github.com/le-yams/NFluent.Json/commit/79154eee439047b1784dc54d19f1a3fea2266964))
+
 ## [1.2.1](https://github.com/le-yams/NFluent.Json/compare/v1.2.0...v1.2.1) (2024-07-25)
 
 
