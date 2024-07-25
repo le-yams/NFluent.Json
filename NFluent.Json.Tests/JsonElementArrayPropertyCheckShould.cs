@@ -33,6 +33,20 @@ public class JsonElementArrayPropertyCheckShould
     }
 
     [Fact]
+    public async Task HasArrayPropertyWorksOnHavingPropertyWithExpectedObjects()
+    {
+        var expectedValue = new[]
+        {
+            new { id = 1, name = "1" },
+            new { id = 2, name = "2" },
+            new { id = 3, name = "3" }
+        };
+        var json = await TestJson.Element(new { propA = expectedValue });
+
+        Check.That(json).HasArrayProperty("propA", expectedValue);
+    }
+
+    [Fact]
     public async Task HasArrayPropertyWorksOnHavingPropertyWithExpectedNullValues()
     {
         var expectedValue = new int?[] { 1, null };
@@ -91,6 +105,22 @@ public class JsonElementArrayPropertyCheckShould
             "\t[{\"propA\":[2,1]}]");
     }
 
+    [Fact]
+    public async Task HasArrayPropertyFailingWhenExpectingArrayHasSameLengthButDifferentObjectValues()
+    {
+        var expectedValue = new[]
+        {
+            new { id = 1, name = "foo" },
+            new { id = 2, name = "bar" }
+        };
+        var json = await TestJson.Element(new { propA = expectedValue.Reverse() });
+
+        Check.ThatCode(() => Check.That(json).HasArrayProperty("propA", expectedValue)).IsAFailingCheckWithMessage(
+            "",
+            "The property value is not equal to the expected value [{\"id\":1,\"name\":\"foo\"},{\"id\":2,\"name\":\"bar\"}].",
+            "The checked struct:",
+            "\t[{\"propA\":[{\"id\":2,\"name\":\"bar\"},{\"id\":1,\"name\":\"foo\"}]}]");
+    }
 
     [Fact]
     public async Task HasArrayPropertyCanBeNegateWithUndefinedProperty()
@@ -129,5 +159,18 @@ public class JsonElementArrayPropertyCheckShould
             "The property 'propA' is present and has value [1,2] whereas it must not.",
             "The checked struct:",
             "\t[{\"propA\":[1,2]}]");
+    }
+
+    [Fact]
+    public async Task HasArrayPropertyNegationFailingWhenHavingThePropertyWithExpectedObjectsValue()
+    {
+        var expectedValue = new[] { new{id=1}, new{id=2} };
+        var json = await TestJson.Element(new { propA = expectedValue });
+
+        Check.ThatCode(() => Check.That(json).Not.HasArrayProperty("propA", expectedValue)).IsAFailingCheckWithMessage(
+            "",
+            "The property 'propA' is present and has value [{\"id\":1},{\"id\":2}] whereas it must not.",
+            "The checked struct:",
+            "\t[{\"propA\":[{\"id\":1},{\"id\":2}]}]");
     }
 }
