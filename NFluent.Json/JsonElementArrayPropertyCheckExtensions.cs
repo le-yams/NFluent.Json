@@ -23,6 +23,7 @@ public static class JsonElementArrayPropertyCheckExtensions
         IEnumerable<T> expectedValue)
     {
         var expectedArray = expectedValue.ToArray();
+        var expectedStr = JsonSerializer.Serialize(expectedArray).Replace("{", "{{").Replace("}", "}}");
         var kindStr = JsonValueKindFormatter.Format(JsonValueKind.Array);
         ExtensibilityHelper.BeginCheck(check)
             .FailWhen(sut => sut.TryGetProperty(propertyName, out _) == false,
@@ -32,9 +33,9 @@ public static class JsonElementArrayPropertyCheckExtensions
                        sut.GetProperty(propertyName).ValueKind != JsonValueKind.Array,
                 $"The '{propertyName}' property kind is not {kindStr}.")
             .FailWhen(sut => !sut.GetProperty(propertyName).ArrayEqualTo(expectedArray).Strict,
-                $"The property value is not equal to the expected value [{string.Join(",", expectedArray)}].")
+                $"The property value is not equal to the expected value {expectedStr}.")
             .OnNegate(
-                $"The property '{propertyName}' is present and has value [{string.Join(",", expectedArray)}] whereas it must not.")
+                $"The property '{propertyName}' is present and has value {expectedStr} whereas it must not.")
             .EndCheck();
 
         return ExtensibilityHelper.BuildCheckLink(check);
@@ -56,7 +57,9 @@ public static class JsonElementArrayPropertyCheckExtensions
         IEnumerable<T> expectedValue)
     {
         var expectedArray = expectedValue.ToArray();
+        var expectedStr = JsonSerializer.Serialize(expectedArray).Replace("{", "{{").Replace("}", "}}");
         var kindStr = JsonValueKindFormatter.Format(JsonValueKind.Array);
+
         ExtensibilityHelper.BeginCheck(check)
             .FailWhen(sut => sut.TryGetProperty(propertyName, out _) == false,
                 $"The '{propertyName}' property is undefined.")
@@ -65,9 +68,9 @@ public static class JsonElementArrayPropertyCheckExtensions
                        sut.GetProperty(propertyName).ValueKind != JsonValueKind.Array,
                 $"The '{propertyName}' property kind is not {kindStr}.")
             .FailWhen(sut => !sut.GetProperty(propertyName).ArrayEqualTo(expectedArray).IgnoringOrder,
-                $"The property value is not equal to the expected value [{string.Join(",", expectedArray)}].")
+                $"The property value is not equal to the expected value {expectedStr}.")
             .OnNegate(
-                $"The property '{propertyName}' is present and has value [{string.Join(",", expectedArray)}] whereas it must not.")
+                $"The property '{propertyName}' is present and has value {expectedStr} whereas it must not.")
             .EndCheck();
 
         return ExtensibilityHelper.BuildCheckLink(check);

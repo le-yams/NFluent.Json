@@ -143,12 +143,13 @@ public static class JsonElementValueCheckExtensions
     public static ICheckLink<ICheck<JsonElement>> HasArrayValue<T>(this ICheck<JsonElement> check, IEnumerable<T> expectedValue)
     {
         var expectedArray = expectedValue.ToArray();
+        var expectedStr = JsonSerializer.Serialize(expectedArray).Replace("{", "{{").Replace("}", "}}");
         ExtensibilityHelper.BeginCheck(check)
             .FailWhen(sut => sut.ValueKind != JsonValueKind.Array,
                 "The property value is not an array.")
             .FailWhen(sut => !sut.ArrayEqualTo(expectedArray).Strict,
-                $"The property value is not equal to the expected value [{string.Join(",", expectedArray)}].")
-            .OnNegate($"The property value is equal to [{string.Join(",", expectedArray)}] whereas it must not.")
+                $"The property value is not equal to the expected value {expectedStr}.")
+            .OnNegate($"The property value is equal to {expectedStr} whereas it must not.")
             .EndCheck();
         return ExtensibilityHelper.BuildCheckLink(check);
     }
@@ -167,13 +168,14 @@ public static class JsonElementValueCheckExtensions
         IEnumerable<T?> expectedValue) where T : notnull
     {
         var expectedArray = expectedValue.ToArray();
+        var expectedStr = JsonSerializer.Serialize(expectedArray).Replace("{", "{{").Replace("}", "}}");
 
         ExtensibilityHelper.BeginCheck(check)
             .FailWhen(sut => sut.ValueKind != JsonValueKind.Array,
                 "The property value is not an array.")
             .FailWhen(sut => !sut.ArrayEqualTo(expectedArray).IgnoringOrder,
-                $"The property value is not equal to the expected value [{string.Join(",", expectedArray)}].")
-            .OnNegate($"The property value is equivalent to [{string.Join(",", expectedArray)}] whereas it must not.")
+                $"The property value is not equal to the expected value {expectedStr}.")
+            .OnNegate($"The property value is equivalent to {expectedStr} whereas it must not.")
             .EndCheck();
         return ExtensibilityHelper.BuildCheckLink(check);
     }

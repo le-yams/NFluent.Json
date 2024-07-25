@@ -98,6 +98,27 @@ public class JsonElementArrayValueEquivalentToCheckShould
                 $"\t[[{string.Join(",", actualValue)}]]");
     }
 
+    [Theory]
+    [InlineData(new[] { 1, 2 }, new[] { 3, 4 })]
+    [InlineData(new[] { 1, 1 }, new[] { 1, 2 })]
+    [InlineData(new[] { 1, 2 }, new[] { 1, 1 })]
+    public async Task HasArrayValueEquivalentToFailingWhenPropertyIsArrayWithSameLengthButDifferentObjectValues(
+        int[] expectedIds, int[] actualIds)
+    {
+        var actualValue = actualIds.Select(i => new { id = i }).ToArray();
+        var actualValueStr = string.Join(',', actualValue.Select(v => $"{{\"id\":{v.id}}}"));
+        var expectedValue = expectedIds.Select(i => new { id = i }).ToArray();
+        var expectedValueStr = string.Join(',', expectedValue.Select(v => $"{{\"id\":{v.id}}}"));
+        var json = await TestJson.Element(new { prop = actualValue });
+
+        Check.ThatCode(() => Check.That(json.GetProperty("prop")).HasArrayValueEquivalentTo(expectedValue))
+            .IsAFailingCheckWithMessage(
+                "",
+                $"The property value is not equal to the expected value [{expectedValueStr}].",
+                "The checked struct:",
+                $"\t[[{actualValueStr}]]");
+    }
+
     [Fact]
     public async Task HasArrayValueEquivalentToFailingWhenPropertyIsWrongKind()
     {
@@ -128,7 +149,7 @@ public class JsonElementArrayValueEquivalentToCheckShould
     [Theory]
     [InlineData(new[] { 1, 2 }, new[] { 1, 2 })]
     [InlineData(new[] { 1, 2 }, new[] { 2, 1 })]
-    public async Task HasArrayValueEquivalentToNegationFailingWhenPropertyIsOfSpecifiedKind(int[] value, IEnumerable<int> equivalentValue)
+    public async Task HasArrayValueEquivalentToNegationFailingWhenArraysAreEqual(int[] value, IEnumerable<int> equivalentValue)
     {
         var json = await TestJson.Element(new { prop = value });
 
@@ -138,5 +159,24 @@ public class JsonElementArrayValueEquivalentToCheckShould
                 $"The property value is equivalent to [{string.Join(",", equivalentValue)}] whereas it must not.",
                 "The checked struct:",
                 $"\t[[{string.Join(",", value)}]]");
+    }
+
+    [Theory]
+    [InlineData(new[] { 1, 2 }, new[] { 1, 2 })]
+    [InlineData(new[] { 1, 2 }, new[] { 2, 1 })]
+    public async Task HasArrayValueEquivalentToNegationFailingWhenObjectArraysAreEqual(int[] ids, IEnumerable<int> equivalentIds)
+    {
+        var value = ids.Select(i => new { id = i }).ToArray();
+        var valueStr = string.Join(',', value.Select(v => $"{{\"id\":{v.id}}}"));
+        var equivalentValue = equivalentIds.Select(i => new { id = i }).ToArray();
+        var equivalentValueStr = string.Join(',', equivalentValue.Select(v => $"{{\"id\":{v.id}}}"));
+        var json = await TestJson.Element(new { prop = value });
+
+        Check.ThatCode(() => Check.That(json.GetProperty("prop")).Not.HasArrayValueEquivalentTo(equivalentValue))
+            .IsAFailingCheckWithMessage(
+                "",
+                $"The property value is equivalent to [{equivalentValueStr}] whereas it must not.",
+                "The checked struct:",
+                $"\t[[{valueStr}]]");
     }
 }

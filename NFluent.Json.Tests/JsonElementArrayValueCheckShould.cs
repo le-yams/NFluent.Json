@@ -52,7 +52,7 @@ public class JsonElementArrayValueCheckShould
     [Fact]
     public async Task HasArrayValueWorksWithObjects()
     {
-        var expectedValue = new[] { new{id=1, name="foo"}, new{id=2, name="bar"} };
+        var expectedValue = new[] { new { id = 1, name = "foo" }, new { id = 2, name = "bar" } };
         var json = await TestJson.Element(new { prop = expectedValue });
 
         Check
@@ -89,6 +89,24 @@ public class JsonElementArrayValueCheckShould
     }
 
     [Fact]
+    public async Task HasArrayValueFailingWhenPropertyIsArrayWithSameLengthButDifferentObjectValues()
+    {
+        var expectedValue = new[]
+        {
+            new { id = 1, name = "foo" },
+            new { id = 2, name = "bar" }
+        };
+        var json = await TestJson.Element(new { prop = expectedValue.Reverse() });
+
+        Check.ThatCode(() => Check.That(json.GetProperty("prop")).HasArrayValue(expectedValue))
+            .IsAFailingCheckWithMessage(
+                "",
+                "The property value is not equal to the expected value [{\"id\":1,\"name\":\"foo\"},{\"id\":2,\"name\":\"bar\"}].",
+                "The checked struct:",
+                "\t[[{\"id\":2,\"name\":\"bar\"},{\"id\":1,\"name\":\"foo\"}]]");
+    }
+
+    [Fact]
     public async Task HasArrayValueFailingWhenPropertyIsWrongKind()
     {
         var expectedValue = new[] { 1, 2 };
@@ -114,7 +132,7 @@ public class JsonElementArrayValueCheckShould
     }
 
     [Fact]
-    public async Task HasArrayValueNegationFailingWhenPropertyIsOfSpecifiedKind()
+    public async Task HasArrayValueNegationFailingWithSameValue()
     {
         var expectedValue = new[] { 1, 2 };
         var json = await TestJson.Element(new { prop = expectedValue });
@@ -125,5 +143,19 @@ public class JsonElementArrayValueCheckShould
                 "The property value is equal to [1,2] whereas it must not.",
                 "The checked struct:",
                 "\t[[1,2]]");
+    }
+
+    [Fact]
+    public async Task HasArrayValueNegationFailingWithSameObjectsValue()
+    {
+        var expectedValue = new[] { new { id = 1 }, new { id = 2 } };
+        var json = await TestJson.Element(new { prop = expectedValue });
+
+        Check.ThatCode(() => Check.That(json.GetProperty("prop")).Not.HasArrayValue(expectedValue))
+            .IsAFailingCheckWithMessage(
+                "",
+                "The property value is equal to [{\"id\":1},{\"id\":2}] whereas it must not.",
+                "The checked struct:",
+                "\t[[{\"id\":1},{\"id\":2}]]");
     }
 }
