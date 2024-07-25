@@ -68,7 +68,7 @@ public static class JsonElementArrayPropertyCheckExtensions
                        sut.GetProperty(propertyName).ValueKind != JsonValueKind.Array,
                 $"The '{propertyName}' property kind is not {kindStr}.")
             .FailWhen(sut => !sut.GetProperty(propertyName).ArrayEqualTo(expectedArray).IgnoringOrder,
-                $"The property value is not equal to the expected value {expectedStr}.")
+                $"The property value is not equivalent to the expected value {expectedStr}.")
             .OnNegate(
                 $"The property '{propertyName}' is present and has value {expectedStr} whereas it must not.")
             .EndCheck();

@@ -174,7 +174,7 @@ public static class JsonElementValueCheckExtensions
             .FailWhen(sut => sut.ValueKind != JsonValueKind.Array,
                 "The property value is not an array.")
             .FailWhen(sut => !sut.ArrayEqualTo(expectedArray).IgnoringOrder,
-                $"The property value is not equal to the expected value {expectedStr}.")
+                $"The property value is not equivalent to the expected value {expectedStr}.")
             .OnNegate($"The property value is equivalent to {expectedStr} whereas it must not.")
             .EndCheck();
         return ExtensibilityHelper.BuildCheckLink(check);

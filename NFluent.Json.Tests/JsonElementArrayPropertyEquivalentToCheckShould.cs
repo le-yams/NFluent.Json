@@ -97,7 +97,7 @@ public class JsonElementArrayPropertyEquivalentToCheckShould
         Check.ThatCode(() => Check.That(json).HasArrayPropertyEquivalentTo("propA", expectedValue))
             .IsAFailingCheckWithMessage(
                 "",
-                "The property value is not equal to the expected value [1,2].",
+                "The property value is not equivalent to the expected value [1,2].",
                 "The checked struct:",
                 "\t[{\"propA\":[1,2,3]}]");
     }
@@ -112,7 +112,7 @@ public class JsonElementArrayPropertyEquivalentToCheckShould
         Check.ThatCode(() => Check.That(json).HasArrayPropertyEquivalentTo("propA", expectedValue))
             .IsAFailingCheckWithMessage(
                 "",
-                "The property value is not equal to the expected value [1,2].",
+                "The property value is not equivalent to the expected value [1,2].",
                 "The checked struct:",
                 "\t[{\"propA\":[2,3]}]");
     }
@@ -131,7 +131,7 @@ public class JsonElementArrayPropertyEquivalentToCheckShould
         Check.ThatCode(() => Check.That(json).HasArrayPropertyEquivalentTo("propA", expectedValue))
             .IsAFailingCheckWithMessage(
                 "",
-                "The property value is not equal to the expected value [{\"id\":1,\"name\":\"foo\"},{\"id\":2,\"name\":\"bar\"}].",
+                "The property value is not equivalent to the expected value [{\"id\":1,\"name\":\"foo\"},{\"id\":2,\"name\":\"bar\"}].",
                 "The checked struct:",
                 "\t[{\"propA\":[{\"id\":2,\"name\":\"foo\"},{\"id\":3,\"name\":\"bar\"}]}]");
     }
