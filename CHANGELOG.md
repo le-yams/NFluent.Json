@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.1](https://github.com/le-yams/NFluent.Json/compare/v1.2.0...v1.2.1) (2024-07-25)
+
+
+### Bug Fixes
+
+* error message with objects array ([848bbc5](https://github.com/le-yams/NFluent.Json/commit/848bbc5b03bed96d9fe127fa0013c019b4a4a137))
+
 ## [1.2.0](https://github.com/le-yams/NFluent.Json/compare/v1.1.0...v1.2.0) (2024-07-12)
 
 
