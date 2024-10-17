@@ -34,7 +34,7 @@ public class JsonElementGuidPropertyCheckShould
 
         Check.ThatCode(() => Check.That(json).HasGuidProperty("propA", expectedValue)).IsAFailingCheckWithMessage(
             "",
-            "The 'propA' property kind is not string.",
+            "The 'propA' property kind is not Guid.",
             "The checked struct:",
             "\t[{\"propA\":\"42\"}]");
     }
@@ -64,7 +64,7 @@ public class JsonElementGuidPropertyCheckShould
     [Fact]
     public async Task HasGuidPropertyCanBeNegateWithWrongPropertyKind()
     {
-        var json = await TestJson.Element(new { propA = Guid.NewGuid() });
+        var json = await TestJson.Element(new { propA = 42 });
 
         Check.That(json).Not.HasGuidProperty("propA", Guid.NewGuid());
     }

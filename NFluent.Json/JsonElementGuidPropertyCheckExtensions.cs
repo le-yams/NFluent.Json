@@ -17,11 +17,9 @@ public static class JsonElementGuidPropertyCheckExtensions
     /// <exception cref="FluentCheckException">The actual value has no property with the specified name and value.</exception>
     public static ICheckLink<ICheck<JsonElement>> HasGuidProperty(this ICheck<JsonElement> check, string propertyName, Guid expectedValue)
     {
-        var valueKind = JsonValueKindFormatter.Format(JsonValueKind.String);
-
         ExtensibilityHelper.BeginCheck(check)
             .FailWhen(PropertyIsNotFound(propertyName), $"The '{propertyName}' property is undefined.")
-            .FailWhen(PropertyHasNotExpectedValueKind(propertyName, JsonValueKind.String), $"The '{propertyName}' property kind is not {valueKind}.")
+            .FailWhen(PropertyHasNotExpectedValueKind(propertyName, JsonValueKind.String), $"The '{propertyName}' property kind is not Guid.")
             .FailWhen(PropertyHasNotExpectedValue(propertyName, expectedValue), $"The property value is not equal to the expected value '{expectedValue}'.")
             .OnNegate($"The property '{propertyName}' is present and has value '{expectedValue}' whereas it must not.")
             .EndCheck();
@@ -37,8 +35,8 @@ public static class JsonElementGuidPropertyCheckExtensions
     private static Func<JsonElement, bool> PropertyHasNotExpectedValueKind(string propertyName, JsonValueKind expectedValueKind)
     {
         return jsonElement => jsonElement.TryGetProperty(propertyName, out _)
-                              && jsonElement.GetProperty(propertyName).ValueKind != expectedValueKind
-                              || !Guid.TryParse(jsonElement.GetProperty(propertyName).GetString(), out _);
+                              && (jsonElement.GetProperty(propertyName).ValueKind != expectedValueKind
+                              || !Guid.TryParse(jsonElement.GetProperty(propertyName).GetString(), out _));
     }
 
     private static Func<JsonElement, bool> PropertyHasNotExpectedValue(string propertyName, Guid expectedValue)

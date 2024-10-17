@@ -16,7 +16,7 @@ Check.That(jsonElement4).HasLongValue(2147483648);
 Check.That(jsonElement5).HasBoolValue(true);
 Check.That(jsonElement6).HasTrueValue();
 Check.That(jsonElement7).HasFalseValue();
-Check.That(jsonElement7).HasGuidValue();
+Check.That(jsonElement7).HasGuidValue(expectedGuid);
 Check.That(jsonElement9).HasArrayValue(new[]{1, 2});
 Check.That(jsonElement10).HasArrayValueEquivalentTo(new[]{2, 1});
 ```
