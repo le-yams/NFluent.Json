@@ -1,4 +1,4 @@
-name: Pull Request Validation
+name: Pull Request Build and Test
 
 on:
   pull_request:
@@ -28,11 +28,10 @@ jobs:
       - name: Build
         run: DOTNET_CLI_TELEMETRY_OPTOUT=1 DOTNET_NOLOGO=true dotnet build -m -graph -c Release
       - name: Test
-        run: DOTNET_CLI_TELEMETRY_OPTOUT=1 DOTNET_NOLOGO=true dotnet test -c Release --no-build --no-restore -v q --logger "trx;LogFileName=$project.trx" || error=true
-      - name: Report tests results
-        uses: dorny/test-reporter@v1
+        run: DOTNET_CLI_TELEMETRY_OPTOUT=1 DOTNET_NOLOGO=true dotnet test -c Release --no-build --no-restore -v q --logger "trx;LogFileName=test_results.trx" || error=true
+      - name: Upload test results
+        if: success() || failure()
+        uses: actions/upload-artifact@v4
         with:
-          name: 'Tests report'
+          name: test-results
           path: '**/*.trx'
-          reporter: dotnet-trx
-          fail-on-error: true
