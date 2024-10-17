@@ -131,6 +131,26 @@ public static class JsonElementValueCheckExtensions
     }
 
     /// <summary>
+    /// Checks that the actual JsonElement Guid value is equal to the specified value.
+    /// </summary>
+    /// <param name="check">The fluent check to be extended.</param>
+    /// <param name="expectedValue"></param>
+    /// <returns>
+    /// A check link.
+    /// </returns>
+    /// <exception cref="FluentCheckException">The actual element value is not equal to the specified one.</exception>
+    public static ICheckLink<ICheck<JsonElement>> HasGuidValue(this ICheck<JsonElement> check, Guid expectedValue)
+    {
+        ExtensibilityHelper.BeginCheck(check)
+            .FailWhen(sut => sut.ValueKind != JsonValueKind.String || !Guid.TryParse(sut.GetString(), out _), "The property value is not a Guid.")
+            .FailWhen(sut => sut.GetGuid() != expectedValue, $"The property value is not equal to the expected value '{expectedValue}'.")
+            .OnNegate($"The property value is equal to '{expectedValue}' whereas it must not.")
+            .EndCheck();
+
+        return ExtensibilityHelper.BuildCheckLink(check);
+    }
+
+    /// <summary>
     /// Checks that the actual JsonElement array value is equal to the specified value (order matters).
     /// Not that this method uses System.Text.Json deserialization and objects static comparison to check the array items presence.
     /// </summary>
