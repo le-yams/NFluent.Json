@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.0](https://github.com/le-yams/NFluent.Json/compare/v1.2.2...v1.3.0) (2024-10-17)
+
+
+### Features
+
+* check Guid property or value ([#14](https://github.com/le-yams/NFluent.Json/issues/14)) ([f0afbc1](https://github.com/le-yams/NFluent.Json/commit/f0afbc189ffe230292e76e837e8a75babd6276e1))
+
 ## [1.2.2](https://github.com/le-yams/NFluent.Json/compare/v1.2.1...v1.2.2) (2024-07-25)
 
 
