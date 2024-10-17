@@ -44,7 +44,7 @@ Check.That(jsonElement).HasBoolProperty("boolProperty", expectedValue: true);
 Check.That(jsonElement).HasIntProperty("intProperty", 42);
 Check.That(jsonElement).HasLongProperty("longProperty", 2147483648);
 Check.That(jsonElement).HasNullProperty("nullProperty");
-Check.That(jsonElement).HasGuidProperty("nullProperty", Guid.NewGuid());
+Check.That(jsonElement).HasGuidProperty("guidProperty", expectedGuid);
 Check.That(jsonElement).HasArrayProperty("arrayProperty", new[] { 1, 2 });
 Check.That(jsonElement).HasArrayPropertyEquivalentTo("arrayProperty", new[] { 2, 1 });
 ```
