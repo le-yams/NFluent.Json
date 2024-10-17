@@ -16,8 +16,9 @@ Check.That(jsonElement4).HasLongValue(2147483648);
 Check.That(jsonElement5).HasBoolValue(true);
 Check.That(jsonElement6).HasTrueValue();
 Check.That(jsonElement7).HasFalseValue();
-Check.That(jsonElement8).HasArrayValue(new[]{1, 2});
-Check.That(jsonElement8).HasArrayValueEquivalentTo(new[]{2, 1});
+Check.That(jsonElement7).HasGuidValue();
+Check.That(jsonElement9).HasArrayValue(new[]{1, 2});
+Check.That(jsonElement10).HasArrayValueEquivalentTo(new[]{2, 1});
 ```
 
 
@@ -43,6 +44,7 @@ Check.That(jsonElement).HasBoolProperty("boolProperty", expectedValue: true);
 Check.That(jsonElement).HasIntProperty("intProperty", 42);
 Check.That(jsonElement).HasLongProperty("longProperty", 2147483648);
 Check.That(jsonElement).HasNullProperty("nullProperty");
-Check.That(jsonElement).HasArrayProperty("arrayProperty", new[]{1, 2});
-Check.That(jsonElement).HasArrayPropertyEquivalentTo("arrayProperty", new[]{2,1});
+Check.That(jsonElement).HasGuidProperty("nullProperty", Guid.NewGuid());
+Check.That(jsonElement).HasArrayProperty("arrayProperty", new[] { 1, 2 });
+Check.That(jsonElement).HasArrayPropertyEquivalentTo("arrayProperty", new[] { 2, 1 });
 ```
