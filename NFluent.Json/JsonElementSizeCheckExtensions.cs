@@ -1,11 +1,10 @@
 ﻿using System.Text.Json;
 using NFluent.Extensibility;
-using NFluent.Json.Internal;
 using NFluent.Kernel;
 
 namespace NFluent.Json;
 
-public static class JsonElementPropertySizeCheckExtensions
+public static class JsonElementSizeCheckExtensions
 {
     /// <summary>
     /// Checks that the actual JsonElement size is equal to the specified value. The element must be a string or an array.

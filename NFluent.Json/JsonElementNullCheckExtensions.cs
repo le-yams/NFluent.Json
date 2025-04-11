@@ -4,7 +4,7 @@ using NFluent.Kernel;
 
 namespace NFluent.Json;
 
-public static class JsonElementNullPropertyCheckExtensions
+public static class JsonElementNullCheckExtensions
 {
     /// <summary>
     /// Checks that the actual JsonElement value is null.
