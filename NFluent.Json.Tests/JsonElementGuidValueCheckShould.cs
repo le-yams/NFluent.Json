@@ -46,7 +46,7 @@ public class JsonElementGuidValueCheckShould
         Check.ThatCode(() => Check.That(json.GetProperty("prop")).HasGuidValue(expectedValue))
             .IsAFailingCheckWithMessage(
                 "",
-                $"The property value is not equal to the expected value '{expectedValue}'.",
+                $"The element is not equal to the expected value '{expectedValue}'.",
                 "The checked struct:",
                 $"\t[{json.GetProperty("prop").GetGuid()}]");
     }
@@ -60,7 +60,7 @@ public class JsonElementGuidValueCheckShould
         Check.ThatCode(() => Check.That(json.GetProperty("prop")).HasGuidValue(expectedValue))
             .IsAFailingCheckWithMessage(
                 "",
-                "The property value is not a Guid.",
+                "The element is not a Guid.",
                 "The checked struct:",
                 "\t[not a guid]");
     }
@@ -74,7 +74,7 @@ public class JsonElementGuidValueCheckShould
         Check.ThatCode(() => Check.That(json.GetProperty("prop")).Not.HasGuidValue(expectedValue))
             .IsAFailingCheckWithMessage(
                 "",
-                $"The property value is equal to '{expectedValue}' whereas it must not.",
+                $"The element is equal to '{expectedValue}' whereas it must not.",
                 "The checked struct:",
                 $"\t[{expectedValue}]");
     }

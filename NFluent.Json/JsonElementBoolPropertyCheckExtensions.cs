@@ -19,10 +19,10 @@ public static class JsonElementBoolPropertyCheckExtensions
     {
         ExtensibilityHelper.BeginCheck(check)
             .FailWhen(sut => sut.ValueKind != JsonValueKind.True && sut.ValueKind != JsonValueKind.False,
-                "The property value is not a boolean.")
+                "The element is not a boolean.")
             .FailWhen(sut => sut.GetBoolean() != expectedValue,
-                $"The property value is not equal to the expected value '{expectedValue}'.")
-            .OnNegate($"The property value is equal to '{expectedValue}' whereas it must not.").EndCheck();
+                $"The element is not equal to the expected value '{expectedValue}'.")
+            .OnNegate($"The element is equal to '{expectedValue}' whereas it must not.").EndCheck();
         return ExtensibilityHelper.BuildCheckLink(check);
     }
 

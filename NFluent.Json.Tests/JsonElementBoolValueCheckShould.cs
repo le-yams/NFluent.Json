@@ -46,7 +46,7 @@ public class JsonElementBoolValueCheckShould
         Check.ThatCode(() => Check.That(json.GetProperty("prop")).HasBoolValue(expectedValue))
             .IsAFailingCheckWithMessage(
                 "",
-                "The property value is not equal to the expected value 'False'.",
+                "The element is not equal to the expected value 'False'.",
                 "The checked struct:",
                 "\t[True]");
     }
@@ -60,7 +60,7 @@ public class JsonElementBoolValueCheckShould
         Check.ThatCode(() => Check.That(json.GetProperty("prop")).HasBoolValue(expectedValue))
             .IsAFailingCheckWithMessage(
                 "",
-                "The property value is not a boolean.",
+                "The element is not a boolean.",
                 "The checked struct:",
                 "\t[42]");
     }
@@ -74,7 +74,7 @@ public class JsonElementBoolValueCheckShould
         Check.ThatCode(() => Check.That(json.GetProperty("prop")).Not.HasBoolValue(expectedValue))
             .IsAFailingCheckWithMessage(
                 "",
-                "The property value is equal to 'True' whereas it must not.",
+                "The element is equal to 'True' whereas it must not.",
                 "The checked struct:",
                 "\t[True]");
     }

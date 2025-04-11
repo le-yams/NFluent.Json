@@ -20,10 +20,10 @@ public static class JsonElementGuidPropertyCheckExtensions
     {
         ExtensibilityHelper.BeginCheck(check)
             .FailWhen(sut => sut.ValueKind != JsonValueKind.String || !Guid.TryParse(sut.GetString(), out _),
-                "The property value is not a Guid.")
+                "The element is not a Guid.")
             .FailWhen(sut => sut.GetGuid() != expectedValue,
-                $"The property value is not equal to the expected value '{expectedValue}'.")
-            .OnNegate($"The property value is equal to '{expectedValue}' whereas it must not.")
+                $"The element is not equal to the expected value '{expectedValue}'.")
+            .OnNegate($"The element is equal to '{expectedValue}' whereas it must not.")
             .EndCheck();
 
         return ExtensibilityHelper.BuildCheckLink(check);

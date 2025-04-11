@@ -17,8 +17,8 @@ public static class JsonElementNullPropertyCheckExtensions
     public static ICheckLink<ICheck<JsonElement>> HasNullValue(this ICheck<JsonElement> check)
     {
         ExtensibilityHelper.BeginCheck(check)
-            .FailWhen(sut => sut.ValueKind != JsonValueKind.Null, "The property value is not null.")
-            .OnNegate("The property value is null whereas it must not.").EndCheck();
+            .FailWhen(sut => sut.ValueKind != JsonValueKind.Null, "The element is not null.")
+            .OnNegate("The element is null whereas it must not.").EndCheck();
         return ExtensibilityHelper.BuildCheckLink(check);
     }
 

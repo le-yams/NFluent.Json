@@ -58,7 +58,7 @@ public class JsonElementHasSizeCheckShould
         Check.ThatCode(() => Check.That(json.GetProperty("prop")).HasSize(value.Length))
             .IsAFailingCheckWithMessage(
                 "",
-                "The property size is not equal to the expected value '2'.",
+                "The element size is not equal to the expected value '2'.",
                 "The checked struct:",
                 "\t[[1,2,3]]");
     }
@@ -72,7 +72,7 @@ public class JsonElementHasSizeCheckShould
         Check.ThatCode(() => Check.That(json.GetProperty("prop")).HasSize(value.Length))
             .IsAFailingCheckWithMessage(
                 "",
-                "The property size is not equal to the expected value '3'.",
+                "The element size is not equal to the expected value '3'.",
                 "The checked struct:",
                 "\t[notfoo]");
     }
@@ -85,7 +85,7 @@ public class JsonElementHasSizeCheckShould
         Check.ThatCode(() => Check.That(json.GetProperty("prop")).HasSize(42))
             .IsAFailingCheckWithMessage(
                 "",
-                "The property value is not a string nor an array.",
+                "The element is not a string nor an array.",
                 "The checked struct:",
                 "\t[42]");
     }
@@ -99,7 +99,7 @@ public class JsonElementHasSizeCheckShould
         Check.ThatCode(() => Check.That(json.GetProperty("prop")).Not.HasSize(value.Length))
             .IsAFailingCheckWithMessage(
                 "",
-                "The property size is '2' whereas it must not.",
+                "The element size is '2' whereas it must not.",
                 "The checked struct:",
                 "\t[[1,2]]");
     }
@@ -113,7 +113,7 @@ public class JsonElementHasSizeCheckShould
         Check.ThatCode(() => Check.That(json.GetProperty("prop")).Not.HasSize(value.Length))
             .IsAFailingCheckWithMessage(
                 "",
-                "The property size is '3' whereas it must not.",
+                "The element size is '3' whereas it must not.",
                 "The checked struct:",
                 "\t[foo]");
     }

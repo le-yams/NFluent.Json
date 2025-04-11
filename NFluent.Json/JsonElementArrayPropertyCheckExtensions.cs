@@ -24,10 +24,10 @@ public static class JsonElementArrayPropertyCheckExtensions
         var expectedStr = JsonSerializer.Serialize(expectedArray).Replace("{", "{{").Replace("}", "}}");
         ExtensibilityHelper.BeginCheck(check)
             .FailWhen(sut => sut.ValueKind != JsonValueKind.Array,
-                "The property value is not an array.")
+                "The element is not an array.")
             .FailWhen(sut => !sut.ArrayEqualTo(expectedArray).Strict,
-                $"The property value is not equal to the expected value {expectedStr}.")
-            .OnNegate($"The property value is equal to {expectedStr} whereas it must not.")
+                $"The element is not equal to the expected value {expectedStr}.")
+            .OnNegate($"The element is equal to {expectedStr} whereas it must not.")
             .EndCheck();
         return ExtensibilityHelper.BuildCheckLink(check);
     }
@@ -50,10 +50,10 @@ public static class JsonElementArrayPropertyCheckExtensions
 
         ExtensibilityHelper.BeginCheck(check)
             .FailWhen(sut => sut.ValueKind != JsonValueKind.Array,
-                "The property value is not an array.")
+                "The element is not an array.")
             .FailWhen(sut => !sut.ArrayEqualTo(expectedArray).IgnoringOrder,
-                $"The property value is not equivalent to the expected value {expectedStr}.")
-            .OnNegate($"The property value is equivalent to {expectedStr} whereas it must not.")
+                $"The element is not equivalent to the expected value {expectedStr}.")
+            .OnNegate($"The element is equivalent to {expectedStr} whereas it must not.")
             .EndCheck();
         return ExtensibilityHelper.BuildCheckLink(check);
     }

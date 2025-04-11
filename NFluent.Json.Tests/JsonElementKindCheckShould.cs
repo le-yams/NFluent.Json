@@ -154,7 +154,7 @@ public class JsonElementKindCheckShould
         Check.ThatCode(() => Check.That(json.GetProperty("prop")).HasKind(JsonValueKind.Number))
             .IsAFailingCheckWithMessage(
                 "",
-                "The property kind is not number.",
+                "The element is not number.",
                 "The checked struct:",
                 "\t[]");
     }
@@ -167,7 +167,7 @@ public class JsonElementKindCheckShould
         Check.ThatCode(() => Check.That(json.GetProperty("stringProp")).Not.HasKind(JsonValueKind.String))
             .IsAFailingCheckWithMessage(
                 "",
-                "The property kind is string whereas it must not.",
+                "The element is string whereas it must not.",
                 "The checked struct:",
                 "\t[]");
     }
@@ -180,7 +180,7 @@ public class JsonElementKindCheckShould
         Check.ThatCode(() => Check.That(json.GetProperty("prop")).IsString())
             .IsAFailingCheckWithMessage(
                 "",
-                "The property kind is not a string.",
+                "The element is not a string.",
                 "The checked struct:",
                 "\t[42]");
     }
@@ -193,7 +193,7 @@ public class JsonElementKindCheckShould
         Check.ThatCode(() => Check.That(json.GetProperty("stringProp")).Not.IsString())
             .IsAFailingCheckWithMessage(
                 "",
-                "The property kind is a string whereas it must not.",
+                "The element is a string whereas it must not.",
                 "The checked struct:",
                 "\t[]");
     }
@@ -206,7 +206,7 @@ public class JsonElementKindCheckShould
         Check.ThatCode(() => Check.That(json.GetProperty("prop")).IsNumber())
             .IsAFailingCheckWithMessage(
                 "",
-                "The property kind is not a number.",
+                "The element is not a number.",
                 "The checked struct:",
                 "\t[42]");
     }
@@ -219,7 +219,7 @@ public class JsonElementKindCheckShould
         Check.ThatCode(() => Check.That(json.GetProperty("numberProp")).Not.IsNumber())
             .IsAFailingCheckWithMessage(
                 "",
-                "The property kind is a number whereas it must not.",
+                "The element is a number whereas it must not.",
                 "The checked struct:",
                 "\t[42]");
     }
@@ -232,7 +232,7 @@ public class JsonElementKindCheckShould
         Check.ThatCode(() => Check.That(json.GetProperty("prop")).IsBoolean())
             .IsAFailingCheckWithMessage(
                 "",
-                "The property kind is not a boolean.",
+                "The element is not a boolean.",
                 "The checked struct:",
                 "\t[42]");
     }
@@ -255,7 +255,7 @@ public class JsonElementKindCheckShould
         Check.ThatCode(() => Check.That(json.GetProperty("boolProp")).Not.IsBoolean())
             .IsAFailingCheckWithMessage(
                 "",
-                "The property kind is a boolean whereas it must not.",
+                "The element is a boolean whereas it must not.",
                 "The checked struct:",
                 "\t[True]");
     }
@@ -268,7 +268,7 @@ public class JsonElementKindCheckShould
         Check.ThatCode(() => Check.That(json.GetProperty("prop")).IsArray())
             .IsAFailingCheckWithMessage(
                 "",
-                "The property is not an array.",
+                "The element is not an array.",
                 "The checked struct:",
                 "\t[42]");
     }
@@ -281,7 +281,7 @@ public class JsonElementKindCheckShould
         Check.ThatCode(() => Check.That(json.GetProperty("arrayProp")).Not.IsArray())
             .IsAFailingCheckWithMessage(
                 "",
-                "The property is an array whereas it must not.",
+                "The element is an array whereas it must not.",
                 "The checked struct:",
                 "\t[[\"\"]]");
     }
@@ -294,7 +294,7 @@ public class JsonElementKindCheckShould
         Check.ThatCode(() => Check.That(json.GetProperty("prop")).IsObject())
             .IsAFailingCheckWithMessage(
                 "",
-                "The property is not an object.",
+                "The element is not an object.",
                 "The checked struct:",
                 "\t[42]");
     }
@@ -307,7 +307,7 @@ public class JsonElementKindCheckShould
         Check.ThatCode(() => Check.That(json.GetProperty("objProp")).Not.IsObject())
             .IsAFailingCheckWithMessage(
                 "",
-                "The property is an object whereas it must not.",
+                "The element is an object whereas it must not.",
                 "The checked struct:",
                 "\t[{}]");
     }

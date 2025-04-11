@@ -20,10 +20,10 @@ public static class JsonElementStringPropertyCheckExtensions
     {
         ExtensibilityHelper.BeginCheck(check)
             .FailWhen(sut => sut.ValueKind != JsonValueKind.String,
-                "The property value is not a string.")
+                "The element is not a string.")
             .FailWhen(sut => !sut.GetString()!.Equals(expectedValue),
-                $"The property value is not equal to the expected value '{expectedValue}'.")
-            .OnNegate($"The property value is equal to '{expectedValue}' whereas it must not.").EndCheck();
+                $"The element is not equal to the expected value '{expectedValue}'.")
+            .OnNegate($"The element is equal to '{expectedValue}' whereas it must not.").EndCheck();
         return ExtensibilityHelper.BuildCheckLink(check);
     }
 

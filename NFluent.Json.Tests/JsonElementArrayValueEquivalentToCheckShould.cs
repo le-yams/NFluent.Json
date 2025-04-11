@@ -123,7 +123,7 @@ public class JsonElementArrayValueEquivalentToCheckShould
         Check.ThatCode(() => Check.That(json.GetProperty("propA")).HasArrayValueEquivalentTo(new[] { 1, 2 }))
             .IsAFailingCheckWithMessage(
                 "",
-                "The property value is not an array.",
+                "The element is not an array.",
                 "The checked struct:",
                 "\t[42]");
     }
@@ -137,7 +137,7 @@ public class JsonElementArrayValueEquivalentToCheckShould
         Check.ThatCode(() => Check.That(json.GetProperty("prop")).HasArrayValueEquivalentTo(expectedValue))
             .IsAFailingCheckWithMessage(
                 "",
-                "The property value is not equivalent to the expected value [1,2].",
+                "The element is not equivalent to the expected value [1,2].",
                 "The checked struct:",
                 "\t[[1,2,3]]");
     }
@@ -153,7 +153,7 @@ public class JsonElementArrayValueEquivalentToCheckShould
         Check.ThatCode(() => Check.That(json.GetProperty("prop")).HasArrayValueEquivalentTo(expectedValue))
             .IsAFailingCheckWithMessage(
                 "",
-                $"The property value is not equivalent to the expected value [{string.Join(",", expectedValue)}].",
+                $"The element is not equivalent to the expected value [{string.Join(",", expectedValue)}].",
                 "The checked struct:",
                 $"\t[[{string.Join(",", actualValue)}]]");
     }
@@ -173,7 +173,7 @@ public class JsonElementArrayValueEquivalentToCheckShould
         Check.ThatCode(() => Check.That(json.GetProperty("prop")).HasArrayValueEquivalentTo(expectedValue))
             .IsAFailingCheckWithMessage(
                 "",
-                $"The property value is not equivalent to the expected value [{expectedValueStr}].",
+                $"The element is not equivalent to the expected value [{expectedValueStr}].",
                 "The checked struct:",
                 $"\t[[{actualValueStr}]]");
     }
@@ -188,7 +188,7 @@ public class JsonElementArrayValueEquivalentToCheckShould
         Check.ThatCode(() => Check.That(json.GetProperty("prop")).Not.HasArrayValueEquivalentTo(equivalentValue))
             .IsAFailingCheckWithMessage(
                 "",
-                $"The property value is equivalent to [{string.Join(",", equivalentValue)}] whereas it must not.",
+                $"The element is equivalent to [{string.Join(",", equivalentValue)}] whereas it must not.",
                 "The checked struct:",
                 $"\t[[{string.Join(",", value)}]]");
     }
@@ -207,7 +207,7 @@ public class JsonElementArrayValueEquivalentToCheckShould
         Check.ThatCode(() => Check.That(json.GetProperty("prop")).Not.HasArrayValueEquivalentTo(equivalentValue))
             .IsAFailingCheckWithMessage(
                 "",
-                $"The property value is equivalent to [{equivalentValueStr}] whereas it must not.",
+                $"The element is equivalent to [{equivalentValueStr}] whereas it must not.",
                 "The checked struct:",
                 $"\t[[{valueStr}]]");
     }

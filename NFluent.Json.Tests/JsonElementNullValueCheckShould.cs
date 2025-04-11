@@ -33,7 +33,7 @@ public class JsonElementNullValueCheckShould
         Check.ThatCode(() => Check.That(json.GetProperty("prop")).HasNullValue())
             .IsAFailingCheckWithMessage(
                 "",
-                "The property value is not null.",
+                "The element is not null.",
                 "The checked struct:",
                 "\t[42]");
     }
@@ -46,7 +46,7 @@ public class JsonElementNullValueCheckShould
         Check.ThatCode(() => Check.That(json.GetProperty("nullProp")).Not.HasNullValue())
             .IsAFailingCheckWithMessage(
                 "",
-                "The property value is null whereas it must not.",
+                "The element is null whereas it must not.",
                 "The checked struct:",
                 "\t[]");
     }
