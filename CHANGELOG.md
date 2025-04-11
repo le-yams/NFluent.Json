@@ -1,5 +1,27 @@
 # Changelog
 
+## [2.0.0](https://github.com/le-yams/NFluent.Json/compare/v1.3.0...v2.0.0) (2025-04-11)
+
+
+### ⚠ BREAKING CHANGES
+
+* remove HasTrueValue() and HasFalseValue()
+
+### Features
+
+* check string and array size ([#17](https://github.com/le-yams/NFluent.Json/issues/17)) ([d7ab09c](https://github.com/le-yams/NFluent.Json/commit/d7ab09c6da8286acf4e80c90914592734f01795d))
+* remove HasTrueValue() and HasFalseValue() ([b73050a](https://github.com/le-yams/NFluent.Json/commit/b73050acacd5811a732f9a8e855b0b35a7613241))
+
+
+### Bug Fixes
+
+* element fail messages ([fcd0448](https://github.com/le-yams/NFluent.Json/commit/fcd04488b6797b748aad45f081c3e120fc84dd2a))
+
+
+### Other
+
+* **deps:** update coverlet.collector to 6.0.4 ([5543b76](https://github.com/le-yams/NFluent.Json/commit/5543b76f6ec0a60f498e957a1446257d25430f6f))
+
 ## [1.3.0](https://github.com/le-yams/NFluent.Json/compare/v1.2.2...v1.3.0) (2024-10-17)
 
 
