@@ -6,16 +6,41 @@ namespace NFluent.Json.Tests;
 public class JsonElementStringPropertyCheckShould
 {
     [Fact]
-    public async Task HasStringPropertyWorksOnHavingPropertyWithExpectedValue()
+    public async Task PassWithExpectedValue()
     {
-        var expectedValue = "42";
+        const string expectedValue = "42";
         var json = await TestJson.Element(new { propA = expectedValue });
 
         Check.That(json).HasStringProperty("propA", expectedValue);
     }
 
     [Fact]
-    public async Task HasStringPropertyFailingWhenPropertyIsUndefined()
+    public async Task PassWhenNegatedWithUndefinedProperty()
+    {
+        var json = await TestJson.Element(new { propA = "" });
+
+        Check.That(json).Not.HasStringProperty("propB", "42");
+    }
+
+    [Fact]
+    public async Task PassWhenNegatedWithWrongKind()
+    {
+        var json = await TestJson.Element(new { propA = 42 });
+
+        Check.That(json).Not.HasStringProperty("propA", "expectedValue");
+    }
+
+    [Fact]
+    public async Task PassWhenNegatedWithWrongValue()
+    {
+        const string expectedValue = "expectedValue";
+        var json = await TestJson.Element(new { propA = $"not {expectedValue}" });
+
+        Check.That(json).Not.HasStringProperty("propA", expectedValue);
+    }
+
+    [Fact]
+    public async Task FailWhenPropertyIsUndefined()
     {
         var json = await TestJson.Element(new { propA = "" });
 
@@ -27,7 +52,7 @@ public class JsonElementStringPropertyCheckShould
     }
 
     [Fact]
-    public async Task HasStringPropertyFailingWhenPropertyIsNotAString()
+    public async Task FailWhenNotAString()
     {
         var json = await TestJson.Element(new { propA = 42 });
 
@@ -39,7 +64,7 @@ public class JsonElementStringPropertyCheckShould
     }
 
     [Fact]
-    public async Task HasStringPropertyFailingWhenPropertyHasWrongValue()
+    public async Task FailWithWrongValue()
     {
         const string expectedValue = "42";
         var json = await TestJson.Element(new { propA = $"not {expectedValue}" });
@@ -52,32 +77,7 @@ public class JsonElementStringPropertyCheckShould
     }
 
     [Fact]
-    public async Task HasStringPropertyCanBeNegateWithUndefinedProperty()
-    {
-        var json = await TestJson.Element(new { propA = "" });
-
-        Check.That(json).Not.HasStringProperty("propB", "42");
-    }
-
-    [Fact]
-    public async Task HasStringPropertyCanBeNegateWithWrongPropertyKind()
-    {
-        var json = await TestJson.Element(new { propA = 42 });
-
-        Check.That(json).Not.HasStringProperty("propA", "expectedValue");
-    }
-
-    [Fact]
-    public async Task HasStringPropertyCanBeNegateWithWrongPropertyValue()
-    {
-        const string expectedValue = "expectedValue";
-        var json = await TestJson.Element(new { propA = $"not {expectedValue}" });
-
-        Check.That(json).Not.HasStringProperty("propA", expectedValue);
-    }
-
-    [Fact]
-    public async Task HasStringPropertyNegationFailingWhenHavingThePropertyWithExpectedValue()
+    public async Task FailWhenNegatedWithExpectedValue()
     {
         const string expectedValue = "42";
         var json = await TestJson.Element(new { propA = expectedValue });

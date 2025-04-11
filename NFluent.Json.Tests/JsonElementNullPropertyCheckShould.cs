@@ -8,7 +8,7 @@ internal record JsonWithNullableProperties(int? intProp, string? stringProp, boo
 public class JsonElementNullPropertyCheckShould
 {
     [Fact]
-    public async Task HasNullPropertyWorksOnHavingNullProperty()
+    public async Task PassWithNullProperty()
     {
         var json = await TestJson.Element(new JsonWithNullableProperties(null, null, null));
 
@@ -18,7 +18,25 @@ public class JsonElementNullPropertyCheckShould
     }
 
     [Fact]
-    public async Task HasNullPropertyFailingWhenPropertyIsUndefined()
+    public async Task PassWhenNegatedWithUndefinedProperty()
+    {
+        var json = await TestJson.Element(new JsonWithNullableProperties(null, null, null));
+
+        Check.That(json).Not.HasNullProperty("undefinedProp");
+    }
+
+    [Fact]
+    public async Task PassWhenNegatedWithNonNullProperty()
+    {
+        var json = await TestJson.Element(new JsonWithNullableProperties(42, "foo", true));
+
+        Check.That(json).Not.HasNullProperty("intProp");
+        Check.That(json).Not.HasNullProperty("stringProp");
+        Check.That(json).Not.HasNullProperty("boolProp");
+    }
+
+    [Fact]
+    public async Task FailWhenPropertyIsUndefined()
     {
         var json = await TestJson.Element(new JsonWithNullableProperties(null, null, null));
 
@@ -30,7 +48,7 @@ public class JsonElementNullPropertyCheckShould
     }
 
     [Fact]
-    public async Task HasNullPropertyFailingWhenPropertyIsNotNull()
+    public async Task FailWithNonNullProperty()
     {
         var json = await TestJson.Element(new JsonWithNullableProperties(42, "foo", true));
 
@@ -52,31 +70,13 @@ public class JsonElementNullPropertyCheckShould
     }
 
     [Fact]
-    public async Task HasNullPropertyCanBeNegateWithUndefinedProperty()
+    public async Task FailWhenNegatedWithNullValue()
     {
         var json = await TestJson.Element(new JsonWithNullableProperties(null, null, null));
 
-        Check.That(json).Not.HasNullProperty("undefinedProp");
-    }
-
-    [Fact]
-    public async Task HasNullPropertyCanBeNegateWithNonNullProperty()
-    {
-        var json = await TestJson.Element(new JsonWithNullableProperties(42, "foo", true));
-
-        Check.That(json).Not.HasNullProperty("intProp");
-        Check.That(json).Not.HasNullProperty("stringProp");
-        Check.That(json).Not.HasNullProperty("boolProp");
-    }
-
-    [Fact]
-    public async Task HasNullPropertyNegationFailingWhenHavingTheNullProperty()
-    {
-        var json = await TestJson.Element(new JsonWithNullableProperties(null, null, null));
-    
         Check.ThatCode(() => Check.That(json).Not.HasNullProperty("intProp")).IsAFailingCheckWithMessage(
             "",
-            $"The property 'intProp' is present and is null whereas it must not.",
+            "The property 'intProp' is present and is null whereas it must not.",
             "The checked struct:",
             "\t[{\"intProp\":null,\"stringProp\":null,\"boolProp\":null}]");
     }

@@ -8,6 +8,27 @@ namespace NFluent.Json;
 public static class JsonElementLongPropertyCheckExtensions
 {
     /// <summary>
+    /// Checks that the actual JsonElement long value is equal to the specified value.
+    /// </summary>
+    /// <param name="check">The fluent check to be extended.</param>
+    /// <param name="expectedValue"></param>
+    /// <returns>
+    /// A check link.
+    /// </returns>
+    /// <exception cref="FluentCheckException">The actual element value is not equal to the specified one.</exception>
+    public static ICheckLink<ICheck<JsonElement>> HasLongValue(this ICheck<JsonElement> check, long expectedValue)
+    {
+        ExtensibilityHelper.BeginCheck(check)
+            .FailWhen(sut => sut.ValueKind != JsonValueKind.Number,
+                "The property value is not a number.")
+            .FailWhen(sut => sut.GetInt64() != expectedValue,
+                $"The property value is not equal to the expected value {expectedValue}.")
+            .OnNegate($"The property value is equal to {expectedValue} whereas it must not.")
+            .EndCheck();
+        return ExtensibilityHelper.BuildCheckLink(check);
+    }
+
+    /// <summary>
     /// Checks that the actual JsonElement has the specified long property with the expected value.
     /// </summary>
     /// <param name="check">The fluent check to be extended.</param>

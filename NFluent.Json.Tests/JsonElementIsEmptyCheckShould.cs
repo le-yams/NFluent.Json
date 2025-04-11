@@ -6,7 +6,7 @@ namespace NFluent.Json.Tests;
 public class JsonElementIsEmptyCheckShould
 {
     [Fact]
-    public async Task WorkWithString()
+    public async Task PassWithEmptyString()
     {
         const string value = "";
         var json = await TestJson.Element(new { prop = value });
@@ -17,7 +17,7 @@ public class JsonElementIsEmptyCheckShould
     }
 
     [Fact]
-    public async Task WorkWithArray()
+    public async Task PassWithEmptyArray()
     {
         var value = Array.Empty<int>();
         var json = await TestJson.Element(new { prop = value });
@@ -67,7 +67,7 @@ public class JsonElementIsEmptyCheckShould
     }
 
     [Fact]
-    public async Task WorkWhenNegated()
+    public async Task PassWhenNegatedWithNonEmptyArray()
     {
         var value = new[] { 1, 2 };
         var json = await TestJson.Element(new { prop = value });
@@ -78,7 +78,18 @@ public class JsonElementIsEmptyCheckShould
     }
 
     [Fact]
-    public async Task FailWhenNegatedAndPropertyActuallyIsEmpty()
+    public async Task PassWhenNegatedWithNonEmptyString()
+    {
+        const string value = "foo";
+        var json = await TestJson.Element(new { prop = value });
+
+        Check
+            .That(json.GetProperty("prop"))
+            .Not.IsEmpty();
+    }
+
+    [Fact]
+    public async Task FailWhenNegatedWithEmptyArray()
     {
         var json = await TestJson.Element(new { prop = Array.Empty<int>() });
 
@@ -88,5 +99,18 @@ public class JsonElementIsEmptyCheckShould
                 "The property size is '0' whereas it must not.",
                 "The checked struct:",
                 "\t[[]]");
+    }
+
+    [Fact]
+    public async Task FailWhenNegatedWithEmptyString()
+    {
+        var json = await TestJson.Element(new { prop = "" });
+
+        Check.ThatCode(() => Check.That(json.GetProperty("prop")).Not.IsEmpty())
+            .IsAFailingCheckWithMessage(
+                "",
+                "The property size is '0' whereas it must not.",
+                "The checked struct:",
+                "\t[]");
     }
 }

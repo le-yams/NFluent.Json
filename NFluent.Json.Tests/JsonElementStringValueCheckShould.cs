@@ -6,7 +6,7 @@ namespace NFluent.Json.Tests;
 public class JsonElementStringValueCheckShould
 {
     [Fact]
-    public async Task HasStringValueWorks()
+    public async Task PassWithExpectedValue()
     {
         const string expectedValue = "42";
         var json = await TestJson.Element(new { stringProp = expectedValue });
@@ -17,7 +17,29 @@ public class JsonElementStringValueCheckShould
     }
 
     [Fact]
-    public async Task HasStringValueFailingWhenPropertyIsNotExpectedValue()
+    public async Task PassWhenNegatedWithWrongValue()
+    {
+        const string expectedValue = "42";
+        var json = await TestJson.Element(new { prop = $"not {expectedValue}" });
+
+        Check
+            .That(json.GetProperty("prop"))
+            .Not.HasStringValue("");
+    }
+
+    [Fact]
+    public async Task PassWhenNegatedWithWrongKind()
+    {
+        const int expectedValue = 42;
+        var json = await TestJson.Element(new { prop = expectedValue });
+
+        Check
+            .That(json.GetProperty("prop"))
+            .Not.HasStringValue(expectedValue.ToString());
+    }
+
+    [Fact]
+    public async Task FailWithWrongValue()
     {
         const string expectedValue = "42";
         var json = await TestJson.Element(new { stringProp = $"not {expectedValue}" });
@@ -31,7 +53,7 @@ public class JsonElementStringValueCheckShould
     }
 
     [Fact]
-    public async Task HasStringValueFailingWhenPropertyIsWrongKind()
+    public async Task FailWhenNotAString()
     {
         const string expectedValue = "42";
         var json = await TestJson.Element(new { numberProp = 42 });
@@ -45,18 +67,7 @@ public class JsonElementStringValueCheckShould
     }
 
     [Fact]
-    public async Task HasStringValueCanBeNegate()
-    {
-        const string expectedValue = "42";
-        var json = await TestJson.Element(new { prop = $"not {expectedValue}" });
-
-        Check
-            .That(json.GetProperty("prop"))
-            .Not.HasStringValue("");
-    }
-
-    [Fact]
-    public async Task HasStringValueNegationFailingWhenPropertyIsOfSpecifiedKind()
+    public async Task FailWhenNegatedWithExpectedValue()
     {
         const string expectedValue = "42";
         var json = await TestJson.Element(new { stringProp = expectedValue });

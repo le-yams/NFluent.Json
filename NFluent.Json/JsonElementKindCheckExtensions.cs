@@ -36,8 +36,8 @@ public static class JsonElementKindCheckExtensions
     public static ICheckLink<ICheck<JsonElement>> IsString(this ICheck<JsonElement> check)
     {
         ExtensibilityHelper.BeginCheck(check)
-            .FailWhen(sut => sut.ValueKind != JsonValueKind.String, $"The property kind is not a string.")
-            .OnNegate($"The property kind is a string whereas it must not.").EndCheck();
+            .FailWhen(sut => sut.ValueKind != JsonValueKind.String, "The property kind is not a string.")
+            .OnNegate("The property kind is a string whereas it must not.").EndCheck();
         return ExtensibilityHelper.BuildCheckLink(check);
     }
 
@@ -52,8 +52,8 @@ public static class JsonElementKindCheckExtensions
     public static ICheckLink<ICheck<JsonElement>> IsNumber(this ICheck<JsonElement> check)
     {
         ExtensibilityHelper.BeginCheck(check)
-            .FailWhen(sut => sut.ValueKind != JsonValueKind.Number, $"The property kind is not a number.")
-            .OnNegate($"The property kind is a number whereas it must not.").EndCheck();
+            .FailWhen(sut => sut.ValueKind != JsonValueKind.Number, "The property kind is not a number.")
+            .OnNegate("The property kind is a number whereas it must not.").EndCheck();
         return ExtensibilityHelper.BuildCheckLink(check);
     }
 
@@ -68,8 +68,8 @@ public static class JsonElementKindCheckExtensions
     public static ICheckLink<ICheck<JsonElement>> IsBoolean(this ICheck<JsonElement> check)
     {
         ExtensibilityHelper.BeginCheck(check)
-            .FailWhen(sut => sut.ValueKind != JsonValueKind.False && sut.ValueKind != JsonValueKind.True, $"The property kind is not a boolean.")
-            .OnNegate($"The property kind is a boolean whereas it must not.").EndCheck();
+            .FailWhen(sut => sut.ValueKind != JsonValueKind.False && sut.ValueKind != JsonValueKind.True, "The property kind is not a boolean.")
+            .OnNegate("The property kind is a boolean whereas it must not.").EndCheck();
         return ExtensibilityHelper.BuildCheckLink(check);
     }
 
@@ -84,8 +84,8 @@ public static class JsonElementKindCheckExtensions
     public static ICheckLink<ICheck<JsonElement>> IsFalse(this ICheck<JsonElement> check)
     {
         ExtensibilityHelper.BeginCheck(check)
-            .FailWhen(sut => sut.ValueKind != JsonValueKind.False, $"The property kind is not false.")
-            .OnNegate($"The property kind is false whereas it must not.").EndCheck();
+            .FailWhen(sut => sut.ValueKind != JsonValueKind.False, "The property kind is not false.")
+            .OnNegate("The property kind is false whereas it must not.").EndCheck();
         return ExtensibilityHelper.BuildCheckLink(check);
     }
 
@@ -100,8 +100,8 @@ public static class JsonElementKindCheckExtensions
     public static ICheckLink<ICheck<JsonElement>> IsTrue(this ICheck<JsonElement> check)
     {
         ExtensibilityHelper.BeginCheck(check)
-            .FailWhen(sut => sut.ValueKind != JsonValueKind.True, $"The property kind is not true.")
-            .OnNegate($"The property kind is true whereas it must not.").EndCheck();
+            .FailWhen(sut => sut.ValueKind != JsonValueKind.True, "The property kind is not true.")
+            .OnNegate("The property kind is true whereas it must not.").EndCheck();
         return ExtensibilityHelper.BuildCheckLink(check);
     }
 
@@ -116,8 +116,8 @@ public static class JsonElementKindCheckExtensions
     public static ICheckLink<ICheck<JsonElement>> IsArray(this ICheck<JsonElement> check)
     {
         ExtensibilityHelper.BeginCheck(check)
-            .FailWhen(sut => sut.ValueKind != JsonValueKind.Array, $"The property is not an array.")
-            .OnNegate($"The property is an array whereas it must not.").EndCheck();
+            .FailWhen(sut => sut.ValueKind != JsonValueKind.Array, "The property is not an array.")
+            .OnNegate("The property is an array whereas it must not.").EndCheck();
         return ExtensibilityHelper.BuildCheckLink(check);
     }
 
@@ -132,8 +132,8 @@ public static class JsonElementKindCheckExtensions
     public static ICheckLink<ICheck<JsonElement>> IsObject(this ICheck<JsonElement> check)
     {
         ExtensibilityHelper.BeginCheck(check)
-            .FailWhen(sut => sut.ValueKind != JsonValueKind.Object, $"The property is not an object.")
-            .OnNegate($"The property is an object whereas it must not.").EndCheck();
+            .FailWhen(sut => sut.ValueKind != JsonValueKind.Object, "The property is not an object.")
+            .OnNegate("The property is an object whereas it must not.").EndCheck();
         return ExtensibilityHelper.BuildCheckLink(check);
     }
 }

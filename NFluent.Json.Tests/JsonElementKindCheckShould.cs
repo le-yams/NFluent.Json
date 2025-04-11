@@ -7,7 +7,7 @@ namespace NFluent.Json.Tests;
 public class JsonElementKindCheckShould
 {
     [Fact]
-    public async Task HasKindWorks()
+    public async Task PassWithExpectedKind()
     {
         var json = await TestJson.Element(new
         {
@@ -44,20 +44,7 @@ public class JsonElementKindCheckShould
     }
 
     [Fact]
-    public async Task HasKindFailingWhenPropertyIsWrongKind()
-    {
-        var json = await TestJson.Element(new { prop = "" });
-
-        Check.ThatCode(() => Check.That(json.GetProperty("prop")).HasKind(JsonValueKind.Number))
-            .IsAFailingCheckWithMessage(
-                "",
-                "The property kind is not number.",
-                "The checked struct:",
-                "\t[]");
-    }
-
-    [Fact]
-    public async Task HasKindCanBeNegate()
+    public async Task PassWhenNegatedWithWrongKind()
     {
         var json = await TestJson.Element(new { stringProp = "" });
 
@@ -67,20 +54,7 @@ public class JsonElementKindCheckShould
     }
 
     [Fact]
-    public async Task HasKindNegationFailingWhenPropertyIsOfSpecifiedKind()
-    {
-        var json = await TestJson.Element(new { stringProp = "" });
-
-        Check.ThatCode(() => Check.That(json.GetProperty("stringProp")).Not.HasKind(JsonValueKind.String))
-            .IsAFailingCheckWithMessage(
-                "",
-                "The property kind is string whereas it must not.",
-                "The checked struct:",
-                "\t[]");
-    }
-
-    [Fact]
-    public async Task IsStringWorks()
+    public async Task PassWithAString()
     {
         var json = await TestJson.Element(new { stringProp = "" });
 
@@ -90,20 +64,7 @@ public class JsonElementKindCheckShould
     }
 
     [Fact]
-    public async Task IsStringFailingWhenPropertyIsWrongKind()
-    {
-        var json = await TestJson.Element(new { prop = 42 });
-
-        Check.ThatCode(() => Check.That(json.GetProperty("prop")).IsString())
-            .IsAFailingCheckWithMessage(
-                "",
-                "The property kind is not a string.",
-                "The checked struct:",
-                "\t[42]");
-    }
-
-    [Fact]
-    public async Task IsStringCanBeNegate()
+    public async Task PassWhenNegatedWithNotAString()
     {
         var json = await TestJson.Element(new { intProp = 42 });
 
@@ -113,20 +74,7 @@ public class JsonElementKindCheckShould
     }
 
     [Fact]
-    public async Task IsStringNegationFailingWhenPropertyIsOfSpecifiedKind()
-    {
-        var json = await TestJson.Element(new { stringProp = "" });
-
-        Check.ThatCode(() => Check.That(json.GetProperty("stringProp")).Not.IsString())
-            .IsAFailingCheckWithMessage(
-                "",
-                "The property kind is a string whereas it must not.",
-                "The checked struct:",
-                "\t[]");
-    }
-
-    [Fact]
-    public async Task IsNumberWorks()
+    public async Task PassWithANumber()
     {
         var json = await TestJson.Element(new { numberProp = 42 });
 
@@ -136,20 +84,7 @@ public class JsonElementKindCheckShould
     }
 
     [Fact]
-    public async Task IsNumberFailingWhenPropertyIsWrongKind()
-    {
-        var json = await TestJson.Element(new { prop = "42" });
-
-        Check.ThatCode(() => Check.That(json.GetProperty("prop")).IsNumber())
-            .IsAFailingCheckWithMessage(
-                "",
-                "The property kind is not a number.",
-                "The checked struct:",
-                "\t[42]");
-    }
-
-    [Fact]
-    public async Task IsNumberCanBeNegate()
+    public async Task PassWhenNegatedWithNotANumber()
     {
         var json = await TestJson.Element(new { stringProp = "42" });
 
@@ -159,20 +94,17 @@ public class JsonElementKindCheckShould
     }
 
     [Fact]
-    public async Task IsNumberNegationFailingWhenPropertyIsOfSpecifiedKind()
+    public async Task PassWhenNegatedWithNotAnArray()
     {
-        var json = await TestJson.Element(new { numberProp = 42 });
+        var json = await TestJson.Element(new { prop = "42" });
 
-        Check.ThatCode(() => Check.That(json.GetProperty("numberProp")).Not.IsNumber())
-            .IsAFailingCheckWithMessage(
-                "",
-                "The property kind is a number whereas it must not.",
-                "The checked struct:",
-                "\t[42]");
+        Check
+            .That(json.GetProperty("prop"))
+            .Not.IsArray();
     }
 
     [Fact]
-    public async Task IsBooleanWorks()
+    public async Task PassWithABoolean()
     {
         var json = await TestJson.Element(new { trueProp = true, falseProp = false });
 
@@ -185,7 +117,115 @@ public class JsonElementKindCheckShould
     }
 
     [Fact]
-    public async Task IsBooleanFailingWhenPropertyIsWrongKind()
+    public async Task PassWithAnArray()
+    {
+        var json = await TestJson.Element(new { arrayProp = new[] { "" } });
+
+        Check
+            .That(json.GetProperty("arrayProp"))
+            .IsArray();
+    }
+
+    [Fact]
+    public async Task PassWithAnObject()
+    {
+        var json = await TestJson.Element(new { objProp = new { } });
+
+        Check
+            .That(json.GetProperty("objProp"))
+            .IsObject();
+    }
+
+    [Fact]
+    public async Task PassWhenNegatedWithNotAnObject()
+    {
+        var json = await TestJson.Element(new { prop = "42" });
+
+        Check
+            .That(json.GetProperty("prop"))
+            .Not.IsObject();
+    }
+
+    [Fact]
+    public async Task FailWithWrongKind()
+    {
+        var json = await TestJson.Element(new { prop = "" });
+
+        Check.ThatCode(() => Check.That(json.GetProperty("prop")).HasKind(JsonValueKind.Number))
+            .IsAFailingCheckWithMessage(
+                "",
+                "The property kind is not number.",
+                "The checked struct:",
+                "\t[]");
+    }
+
+    [Fact]
+    public async Task FailWhenNegatedWithExpectedKind()
+    {
+        var json = await TestJson.Element(new { stringProp = "" });
+
+        Check.ThatCode(() => Check.That(json.GetProperty("stringProp")).Not.HasKind(JsonValueKind.String))
+            .IsAFailingCheckWithMessage(
+                "",
+                "The property kind is string whereas it must not.",
+                "The checked struct:",
+                "\t[]");
+    }
+
+    [Fact]
+    public async Task FailWithNotAString()
+    {
+        var json = await TestJson.Element(new { prop = 42 });
+
+        Check.ThatCode(() => Check.That(json.GetProperty("prop")).IsString())
+            .IsAFailingCheckWithMessage(
+                "",
+                "The property kind is not a string.",
+                "The checked struct:",
+                "\t[42]");
+    }
+
+    [Fact]
+    public async Task FailWhenNegatedWithAString()
+    {
+        var json = await TestJson.Element(new { stringProp = "" });
+
+        Check.ThatCode(() => Check.That(json.GetProperty("stringProp")).Not.IsString())
+            .IsAFailingCheckWithMessage(
+                "",
+                "The property kind is a string whereas it must not.",
+                "The checked struct:",
+                "\t[]");
+    }
+
+    [Fact]
+    public async Task FailWithNotANumber()
+    {
+        var json = await TestJson.Element(new { prop = "42" });
+
+        Check.ThatCode(() => Check.That(json.GetProperty("prop")).IsNumber())
+            .IsAFailingCheckWithMessage(
+                "",
+                "The property kind is not a number.",
+                "The checked struct:",
+                "\t[42]");
+    }
+
+    [Fact]
+    public async Task FailWhenNegatedWithANumber()
+    {
+        var json = await TestJson.Element(new { numberProp = 42 });
+
+        Check.ThatCode(() => Check.That(json.GetProperty("numberProp")).Not.IsNumber())
+            .IsAFailingCheckWithMessage(
+                "",
+                "The property kind is a number whereas it must not.",
+                "The checked struct:",
+                "\t[42]");
+    }
+
+    [Fact]
+    public async Task FailWithNotABoolean()
     {
         var json = await TestJson.Element(new { prop = "42" });
 
@@ -198,7 +238,7 @@ public class JsonElementKindCheckShould
     }
 
     [Fact]
-    public async Task IsBooleanCanBeNegate()
+    public async Task PassWhenNegatedWithNotABoolean()
     {
         var json = await TestJson.Element(new { stringProp = "42" });
 
@@ -208,7 +248,7 @@ public class JsonElementKindCheckShould
     }
 
     [Fact]
-    public async Task IsBooleanNegationFailingWhenPropertyIsOfSpecifiedKind()
+    public async Task FailWhenNegatedWithABoolean()
     {
         var json = await TestJson.Element(new { boolProp = true });
 
@@ -221,129 +261,7 @@ public class JsonElementKindCheckShould
     }
 
     [Fact]
-    public async Task IsFalseWorks()
-    {
-        var json = await TestJson.Element(new { falseProp = false });
-
-        Check
-            .That(json.GetProperty("falseProp"))
-            .IsFalse();
-    }
-
-    [Fact]
-    public async Task IsFalseFailingWhenPropertyIsWrongKind()
-    {
-        var json = await TestJson.Element(new { stringProp = "42", trueProp = true });
-
-        Check.ThatCode(() => Check.That(json.GetProperty("stringProp")).IsFalse())
-            .IsAFailingCheckWithMessage(
-                "",
-                "The property kind is not false.",
-                "The checked struct:",
-                "\t[42]");
-        
-        Check.ThatCode(() => Check.That(json.GetProperty("trueProp")).IsFalse())
-            .IsAFailingCheckWithMessage(
-                "",
-                "The property kind is not false.",
-                "The checked struct:",
-                "\t[True]");
-    }
-
-    [Fact]
-    public async Task IsFalseCanBeNegate()
-    {
-        var json = await TestJson.Element(new { stringProp = "42", trueProp = true });
-
-        Check
-            .That(json.GetProperty("stringProp"))
-            .Not.IsFalse();
-        Check
-            .That(json.GetProperty("trueProp"))
-            .Not.IsFalse();
-    }
-
-    [Fact]
-    public async Task IsFalseNegationFailingWhenPropertyIsOfSpecifiedKind()
-    {
-        var json = await TestJson.Element(new { falseProp = false });
-
-        Check.ThatCode(() => Check.That(json.GetProperty("falseProp")).Not.IsFalse())
-            .IsAFailingCheckWithMessage(
-                "",
-                "The property kind is false whereas it must not.",
-                "The checked struct:",
-                "\t[False]");
-    }
-
-    [Fact]
-    public async Task IsTrueWorks()
-    {
-        var json = await TestJson.Element(new { trueProp = true });
-
-        Check
-            .That(json.GetProperty("trueProp"))
-            .IsTrue();
-    }
-
-    [Fact]
-    public async Task IsTrueFailingWhenPropertyIsWrongKind()
-    {
-        var json = await TestJson.Element(new { stringProp = "42", falseProp = false });
-
-        Check.ThatCode(() => Check.That(json.GetProperty("stringProp")).IsTrue())
-            .IsAFailingCheckWithMessage(
-                "",
-                "The property kind is not true.",
-                "The checked struct:",
-                "\t[42]");
-        
-        Check.ThatCode(() => Check.That(json.GetProperty("falseProp")).IsTrue())
-            .IsAFailingCheckWithMessage(
-                "",
-                "The property kind is not true.",
-                "The checked struct:",
-                "\t[False]");
-    }
-
-    [Fact]
-    public async Task IsTrueCanBeNegate()
-    {
-        var json = await TestJson.Element(new { stringProp = "42", falseProp = false });
-
-        Check
-            .That(json.GetProperty("stringProp"))
-            .Not.IsTrue();
-        Check
-            .That(json.GetProperty("falseProp"))
-            .Not.IsTrue();
-    }
-
-    [Fact]
-    public async Task IsTrueNegationFailingWhenPropertyIsOfSpecifiedKind()
-    {
-        var json = await TestJson.Element(new { trueProp = true });
-
-        Check.ThatCode(() => Check.That(json.GetProperty("trueProp")).Not.IsTrue())
-            .IsAFailingCheckWithMessage(
-                "",
-                "The property kind is true whereas it must not.",
-                "The checked struct:",
-                "\t[True]");
-    }
-    
-    [Fact]
-    public async Task IsArrayWorks()
-    {
-        var json = await TestJson.Element(new { arrayProp = new[]{""} });
-
-        Check
-            .That(json.GetProperty("arrayProp"))
-            .IsArray();
-    }
-
-    [Fact]
-    public async Task IsArrayFailingWhenPropertyIsWrongKind()
+    public async Task FailWithNotAnArray()
     {
         var json = await TestJson.Element(new { prop = "42" });
 
@@ -356,19 +274,9 @@ public class JsonElementKindCheckShould
     }
 
     [Fact]
-    public async Task IsArrayCanBeNegate()
+    public async Task FailWhenNegatedWithAnArray()
     {
-        var json = await TestJson.Element(new { prop = "42" });
-
-        Check
-            .That(json.GetProperty("prop"))
-            .Not.IsArray();
-    }
-
-    [Fact]
-    public async Task IsArrayNegationFailingWhenPropertyIsOfSpecifiedKind()
-    {
-        var json = await TestJson.Element(new { arrayProp = new[]{""} });
+        var json = await TestJson.Element(new { arrayProp = new[] { "" } });
 
         Check.ThatCode(() => Check.That(json.GetProperty("arrayProp")).Not.IsArray())
             .IsAFailingCheckWithMessage(
@@ -377,19 +285,9 @@ public class JsonElementKindCheckShould
                 "The checked struct:",
                 "\t[[\"\"]]");
     }
-    
-    [Fact]
-    public async Task IsObjectWorks()
-    {
-        var json = await TestJson.Element(new { objProp = new {} });
-
-        Check
-            .That(json.GetProperty("objProp"))
-            .IsObject();
-    }
 
     [Fact]
-    public async Task IsObjectFailingWhenPropertyIsWrongKind()
+    public async Task FailWithNotAnObject()
     {
         var json = await TestJson.Element(new { prop = "42" });
 
@@ -402,19 +300,9 @@ public class JsonElementKindCheckShould
     }
 
     [Fact]
-    public async Task IsObjectCanBeNegate()
+    public async Task FailWhenNegatedWithAnObject()
     {
-        var json = await TestJson.Element(new { prop = "42" });
-
-        Check
-            .That(json.GetProperty("prop"))
-            .Not.IsObject();
-    }
-
-    [Fact]
-    public async Task IsObjectNegationFailingWhenPropertyIsOfSpecifiedKind()
-    {
-        var json = await TestJson.Element(new { objProp = new {} });
+        var json = await TestJson.Element(new { objProp = new { } });
 
         Check.ThatCode(() => Check.That(json.GetProperty("objProp")).Not.IsObject())
             .IsAFailingCheckWithMessage(

@@ -8,7 +8,7 @@ public class JsonElementBoolPropertyCheckShould
     [Theory]
     [InlineData(false)]
     [InlineData(true)]
-    public async Task HasBoolPropertyWorksOnHavingPropertyWithExpectedValue(bool expectedValue)
+    public async Task PassWithExpectedValue(bool expectedValue)
     {
         var json = await TestJson.Element(new { propA = expectedValue });
 
@@ -16,7 +16,33 @@ public class JsonElementBoolPropertyCheckShould
     }
 
     [Fact]
-    public async Task HasBoolPropertyFailingWhenPropertyIsUndefined()
+    public async Task PassWhenNegatedWithUndefinedProperty()
+    {
+        var json = await TestJson.Element(new { propA = "" });
+
+        Check.That(json).Not.HasBoolProperty("propB", true);
+    }
+
+    [Fact]
+    public async Task PassWhenNegatedWithWrongPropertyKind()
+    {
+        var json = await TestJson.Element(new { propA = 42 });
+
+        Check.That(json).Not.HasBoolProperty("propA", true);
+    }
+
+    [Theory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public async Task PassWhenNegatedWithWrongPropertyValue(bool expectedValue)
+    {
+        var json = await TestJson.Element(new { propA = !expectedValue });
+
+        Check.That(json).Not.HasBoolProperty("propA", expectedValue);
+    }
+
+    [Fact]
+    public async Task FailWhenPropertyIsUndefined()
     {
         var json = await TestJson.Element(new { propA = true });
 
@@ -28,7 +54,7 @@ public class JsonElementBoolPropertyCheckShould
     }
 
     [Fact]
-    public async Task HasBoolPropertyFailingWhenPropertyIsNotABoolean()
+    public async Task FailWhenPropertyIsNotABoolean()
     {
         var json = await TestJson.Element(new { propA = 42 });
 
@@ -42,7 +68,7 @@ public class JsonElementBoolPropertyCheckShould
     [Theory]
     [InlineData(false)]
     [InlineData(true)]
-    public async Task HasBoolPropertyFailingWhenPropertyHasWrongValue(bool expectedValue)
+    public async Task FailWhenPropertyHasWrongValue(bool expectedValue)
     {
         var json = await TestJson.Element(new { propA = !expectedValue });
 
@@ -53,37 +79,10 @@ public class JsonElementBoolPropertyCheckShould
             $"\t[{{\"propA\":{(!expectedValue).ToString().ToLowerInvariant()}}}]");
     }
 
-    [Fact]
-    public async Task HasBoolPropertyCanBeNegateWithUndefinedProperty()
-    {
-        var json = await TestJson.Element(new { propA = "" });
-
-        Check.That(json).Not.HasBoolProperty("propB", true);
-    }
-
-
-    [Fact]
-    public async Task HasBoolPropertyCanBeNegateWithWrongPropertyKind()
-    {
-        var json = await TestJson.Element(new { propA = 42 });
-
-        Check.That(json).Not.HasBoolProperty("propA", true);
-    }
-
     [Theory]
     [InlineData(false)]
     [InlineData(true)]
-    public async Task HasBoolPropertyCanBeNegateWithWrongPropertyValue(bool expectedValue)
-    {
-        var json = await TestJson.Element(new { propA = !expectedValue });
-
-        Check.That(json).Not.HasBoolProperty("propA", expectedValue);
-    }
-
-    [Theory]
-    [InlineData(false)]
-    [InlineData(true)]
-    public async Task HasBoolPropertyNegationFailingWhenHavingThePropertyWithExpectedValue(bool expectedValue)
+    public async Task FailWhenNegatedWithExpectedValue(bool expectedValue)
     {
         var json = await TestJson.Element(new { propA = expectedValue });
 

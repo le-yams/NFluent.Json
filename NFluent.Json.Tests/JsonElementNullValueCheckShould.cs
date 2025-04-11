@@ -6,7 +6,7 @@ namespace NFluent.Json.Tests;
 public class JsonElementNullValueCheckShould
 {
     [Fact]
-    public async Task HasNullValueWorks()
+    public async Task PassWithNullValue()
     {
         var json = await TestJson.Element(new { nullProp = (string)null! });
 
@@ -16,7 +16,17 @@ public class JsonElementNullValueCheckShould
     }
 
     [Fact]
-    public async Task HasNullValueFailingWhenPropertyIsWrongKind()
+    public async Task PassWhenNegatedWithNullValue()
+    {
+        var json = await TestJson.Element(new { prop = "42" });
+
+        Check
+            .That(json.GetProperty("prop"))
+            .Not.HasNullValue();
+    }
+
+    [Fact]
+    public async Task FailWhenNotANullValue()
     {
         var json = await TestJson.Element(new { prop = "42" });
 
@@ -29,17 +39,7 @@ public class JsonElementNullValueCheckShould
     }
 
     [Fact]
-    public async Task HasNullValueCanBeNegate()
-    {
-        var json = await TestJson.Element(new { prop = "42" });
-
-        Check
-            .That(json.GetProperty("prop"))
-            .Not.HasNullValue();
-    }
-
-    [Fact]
-    public async Task HasNullValueNegationFailingWhenPropertyIsOfSpecifiedKind()
+    public async Task FailWhenNegatedWithNullValue()
     {
         var json = await TestJson.Element(new { nullProp = (string)null! });
 

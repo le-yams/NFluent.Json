@@ -6,31 +6,9 @@ namespace NFluent.Json.Tests;
 public class JsonElementArrayPropertyEquivalentToCheckShould
 {
     [Theory]
-    [InlineData(new[] { 1, 2 }, new[] { 1, 2 })]
-    [InlineData(new[] { 1, 2 }, new[] { 2, 1 })]
-    public async Task HasArrayPropertyEquivalentToWorksOnHavingPropertyWithExpectedNumbers(int[] value,
-        IEnumerable<int> equivalentValue)
-    {
-        var json = await TestJson.Element(new { propA = value });
-
-        Check.That(json).HasArrayPropertyEquivalentTo("propA", equivalentValue);
-    }
-
-    [Theory]
-    [InlineData(new[] { "1", "2" }, new[] { "1", "2" })]
-    [InlineData(new[] { "1", "2" }, new[] { "2", "1" })]
-    public async Task HasArrayPropertyEquivalentToWorksOnHavingPropertyWithExpectedStrings(string[] value,
-        IEnumerable<string> equivalentValue)
-    {
-        var json = await TestJson.Element(new { propA = value });
-
-        Check.That(json).HasArrayPropertyEquivalentTo("propA", equivalentValue);
-    }
-
-    [Theory]
     [InlineData(new[] { true, false, true }, new[] { true, false, true })]
     [InlineData(new[] { true, false, true }, new[] { true, true, false })]
-    public async Task HasArrayPropertyEquivalentToWorksOnHavingPropertyWithExpectedBooleans(bool[] value,
+    public async Task PassWithBooleans(bool[] value,
         IEnumerable<bool> equivalentValue)
     {
         var json = await TestJson.Element(new { propA = value });
@@ -39,9 +17,22 @@ public class JsonElementArrayPropertyEquivalentToCheckShould
     }
 
     [Theory]
+    [InlineData(new[] { 1, 2 }, new[] { 1, 2 })]
+    [InlineData(new[] { 1, 2 }, new[] { 2, 1 })]
+    public async Task PassWithObjects(int[] ids,
+        IEnumerable<int> equivalentIds)
+    {
+        var value = ids.Select(id => new { id, name = $"name {id}" });
+        var equivalentValue = equivalentIds.Select(id => new { id, name = $"name {id}" });
+        var json = await TestJson.Element(new { propA = value });
+
+        Check.That(json).HasArrayPropertyEquivalentTo("propA", equivalentValue);
+    }
+
+    [Theory]
     [InlineData(new[] { "1", "2", null }, new[] { "1", "2", null })]
     [InlineData(new[] { "1", "2", null }, new[] { "2", null, "1" })]
-    public async Task HasArrayPropertyEquivalentToWorksOnHavingPropertyWithExpectedNullValues(string?[] value,
+    public async Task PassWithNullValues(string?[] value,
         IEnumerable<string?> equivalentValue)
     {
         var json = await TestJson.Element(new { propA = value });
@@ -52,18 +43,82 @@ public class JsonElementArrayPropertyEquivalentToCheckShould
     [Theory]
     [InlineData(new[] { 1, 2 }, new[] { 1, 2 })]
     [InlineData(new[] { 1, 2 }, new[] { 2, 1 })]
-    public async Task HasArrayPropertyEquivalentToWorksOnHavingPropertyWithObjects(int[] ids,
-        IEnumerable<int> equivalentIds)
+    public async Task PassWithNumbers(int[] value,
+        IEnumerable<int> equivalentValue)
     {
-        var value = ids.Select(id => new { id, name = $"name {id}" });
-        var equivalentValue = equivalentIds.Select(id => new { id, name = $"name {id}" });
+        var json = await TestJson.Element(new { propA = value });
+
+        Check.That(json).HasArrayPropertyEquivalentTo("propA", equivalentValue);
+    }
+
+    [Theory]
+    [InlineData(new[] { "1", "2" }, new[] { "1", "2" })]
+    [InlineData(new[] { "1", "2" }, new[] { "2", "1" })]
+    public async Task PassWithStrings(string[] value,
+        IEnumerable<string> equivalentValue)
+    {
         var json = await TestJson.Element(new { propA = value });
 
         Check.That(json).HasArrayPropertyEquivalentTo("propA", equivalentValue);
     }
 
     [Fact]
-    public async Task HasArrayPropertyEquivalentToFailingWhenPropertyIsUndefined()
+    public async Task PassWhenNegatedWithUndefinedProperty()
+    {
+        var json = await TestJson.Element(new { propA = "" });
+
+        Check.That(json).Not.HasArrayPropertyEquivalentTo("propB", new[] { 1, 2 });
+    }
+
+    [Fact]
+    public async Task PassWhenNegatedWithWrongPropertyKind()
+    {
+        var json = await TestJson.Element(new { propA = "42" });
+
+        Check.That(json).Not.HasArrayPropertyEquivalentTo("propA", new[] { 1, 2 });
+    }
+
+    [Fact]
+    public async Task PassWhenNegatedWithWrongSize()
+    {
+        var expectedValue = new[] { 1, 2 };
+        var notExpectedValue = expectedValue.Concat(new[] { 3 });
+        var json = await TestJson.Element(new { propA = notExpectedValue });
+
+        Check.That(json).Not.HasArrayPropertyEquivalentTo("propA", expectedValue);
+    }
+
+    [Theory]
+    [InlineData(new[] { 1, 2 }, new[] { 3, 4 })]
+    [InlineData(new[] { 1, 1 }, new[] { 1, 2 })]
+    [InlineData(new[] { 1, 2 }, new[] { 1, 1 })]
+    public async Task PassWhenNegatedWithDifferentValues(int[] expectedValue, IEnumerable<int> notEquivalentValue)
+    {
+        var json = await TestJson.Element(new { prop = notEquivalentValue });
+
+        Check
+            .That(json)
+            .Not.HasArrayPropertyEquivalentTo("prop", expectedValue);
+    }
+
+    [Theory]
+    [InlineData(new[] { 1, 2 }, new[] { 3, 4 })]
+    [InlineData(new[] { 1, 1 }, new[] { 1, 2 })]
+    [InlineData(new[] { 1, 2 }, new[] { 1, 1 })]
+    public async Task PassWhenNegatedWithDifferentObjectValues(int[] expectedIds, IEnumerable<int> notEquivalentIds)
+    {
+        var value = expectedIds.Select(i => new { id = i }).ToArray();
+        var notEquivalentValue = notEquivalentIds.Select(i => new { id = i }).ToArray();
+
+        var json = await TestJson.Element(new { prop = value });
+
+        Check
+            .That(json)
+            .Not.HasArrayPropertyEquivalentTo("prop", notEquivalentValue);
+    }
+
+    [Fact]
+    public async Task FailWhenPropertyIsUndefined()
     {
         var json = await TestJson.Element(new { propA = "" });
 
@@ -76,7 +131,7 @@ public class JsonElementArrayPropertyEquivalentToCheckShould
     }
 
     [Fact]
-    public async Task HasArrayPropertyEquivalentToFailingWhenPropertyIsNotAnArray()
+    public async Task FailWhenPropertyIsNotAnArray()
     {
         var json = await TestJson.Element(new { propA = "42" });
 
@@ -89,7 +144,7 @@ public class JsonElementArrayPropertyEquivalentToCheckShould
     }
 
     [Fact]
-    public async Task HasArrayPropertyEquivalentToFailingWhenExpectingArrayHasDifferentLength()
+    public async Task FailWhenArrayHasDifferentSize()
     {
         var expectedValue = new[] { 1, 2 };
         var json = await TestJson.Element(new { propA = expectedValue.Concat(new[] { 3 }) });
@@ -103,7 +158,7 @@ public class JsonElementArrayPropertyEquivalentToCheckShould
     }
 
     [Fact]
-    public async Task HasArrayPropertyEquivalentToFailingWhenExpectingArrayHasSameLengthButDifferentValues()
+    public async Task FailWhenArrayHasDifferentValues()
     {
         var expectedValue = new[] { 1, 2 };
         var nonExpectedValue = expectedValue.Select(i => i + 1);
@@ -118,7 +173,7 @@ public class JsonElementArrayPropertyEquivalentToCheckShould
     }
 
     [Fact]
-    public async Task HasArrayPropertyEquivalentToFailingWhenExpectingArrayHasSameLengthButDifferentObjectValues()
+    public async Task FailWhenArrayHasDifferentObjectValues()
     {
         var expectedValue = new[]
         {
@@ -136,36 +191,10 @@ public class JsonElementArrayPropertyEquivalentToCheckShould
                 "\t[{\"propA\":[{\"id\":2,\"name\":\"foo\"},{\"id\":3,\"name\":\"bar\"}]}]");
     }
 
-    [Fact]
-    public async Task HasArrayPropertyEquivalentToCanBeNegateWithUndefinedProperty()
-    {
-        var json = await TestJson.Element(new { propA = "" });
-
-        Check.That(json).Not.HasArrayPropertyEquivalentTo("propB", new[] { 1, 2 });
-    }
-
-    [Fact]
-    public async Task HasArrayPropertyEquivalentToCanBeNegateWithWrongPropertyKind()
-    {
-        var json = await TestJson.Element(new { propA = "42" });
-
-        Check.That(json).Not.HasArrayPropertyEquivalentTo("propA", new[] { 1, 2 });
-    }
-
-    [Fact]
-    public async Task HasArrayPropertyEquivalentToCanBeNegateWithWrongLength()
-    {
-        var expectedValue = new[] { 1, 2 };
-        var notExpectedValue = expectedValue.Concat(new[] { 3 });
-        var json = await TestJson.Element(new { propA = notExpectedValue });
-
-        Check.That(json).Not.HasArrayPropertyEquivalentTo("propA", expectedValue);
-    }
-
     [Theory]
     [InlineData(new[] { 1, 2 }, new[] { 1, 2 })]
     [InlineData(new[] { 1, 2 }, new[] { 2, 1 })]
-    public async Task HasArrayPropertyEquivalentToNegationFailingWhenHavingThePropertyWithExpectedValue(int[] value, IEnumerable<int> equivalentValue)
+    public async Task FailWhenNegatedWithEquivalentValues(int[] value, IEnumerable<int> equivalentValue)
     {
         var json = await TestJson.Element(new { propA = value });
 
@@ -180,8 +209,7 @@ public class JsonElementArrayPropertyEquivalentToCheckShould
     [Theory]
     [InlineData(new[] { 1, 2 }, new[] { 1, 2 })]
     [InlineData(new[] { 1, 2 }, new[] { 2, 1 })]
-    public async Task HasArrayPropertyEquivalentToNegationFailingWhenHavingThePropertyWithExpectedObjectsValue(
-        int[] ids, IEnumerable<int> equivalentIds)
+    public async Task FailWhenNegatedWithEquivalentObjectValues(int[] ids, IEnumerable<int> equivalentIds)
     {
         var value = ids.Select(i => new { id = i }).ToArray();
         var valueStr = string.Join(',', value.Select(v => $"{{\"id\":{v.id}}}"));

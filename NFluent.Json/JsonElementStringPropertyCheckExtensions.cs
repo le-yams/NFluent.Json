@@ -8,6 +8,26 @@ namespace NFluent.Json;
 public static class JsonElementStringPropertyCheckExtensions
 {
     /// <summary>
+    /// Checks that the actual JsonElement string value is equal to the specified value.
+    /// </summary>
+    /// <param name="check">The fluent check to be extended.</param>
+    /// <param name="expectedValue"></param>
+    /// <returns>
+    /// A check link.
+    /// </returns>
+    /// <exception cref="FluentCheckException">The actual element value is not equal to the specified one.</exception>
+    public static ICheckLink<ICheck<JsonElement>> HasStringValue(this ICheck<JsonElement> check, string expectedValue)
+    {
+        ExtensibilityHelper.BeginCheck(check)
+            .FailWhen(sut => sut.ValueKind != JsonValueKind.String,
+                "The property value is not a string.")
+            .FailWhen(sut => !sut.GetString()!.Equals(expectedValue),
+                $"The property value is not equal to the expected value '{expectedValue}'.")
+            .OnNegate($"The property value is equal to '{expectedValue}' whereas it must not.").EndCheck();
+        return ExtensibilityHelper.BuildCheckLink(check);
+    }
+
+    /// <summary>
     /// Checks that the actual JsonElement has the specified string property with the expected value.
     /// </summary>
     /// <param name="check">The fluent check to be extended.</param>
@@ -24,7 +44,9 @@ public static class JsonElementStringPropertyCheckExtensions
         ExtensibilityHelper.BeginCheck(check)
             .FailWhen(sut => sut.TryGetProperty(propertyName, out _) == false,
                 $"The '{propertyName}' property is undefined.")
-            .FailWhen(sut => sut.TryGetProperty(propertyName, out _) && sut.GetProperty(propertyName).ValueKind != JsonValueKind.String,
+            .FailWhen(
+                sut => sut.TryGetProperty(propertyName, out _) &&
+                       sut.GetProperty(propertyName).ValueKind != JsonValueKind.String,
                 $"The '{propertyName}' property kind is not {kindStr}.")
             .FailWhen(sut => !sut.GetProperty(propertyName).GetString()!.Equals(expectedValue),
                 $"The property value is not equal to the expected value '{expectedValue}'.")

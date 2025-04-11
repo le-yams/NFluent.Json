@@ -18,7 +18,7 @@ public class JsonElementHasEmptyPropertyCheckShould
     }
 
     [Fact]
-    public async Task WorksWithStringProperty()
+    public async Task PassWithEmptyStringProperty()
     {
         const string value = "";
         var json = await TestJson.Element(new { prop = value });
@@ -29,7 +29,7 @@ public class JsonElementHasEmptyPropertyCheckShould
     }
 
     [Fact]
-    public async Task WorksWithArrayProperty()
+    public async Task PassWithEmptyArrayProperty()
     {
         var value = Array.Empty<int>();
         var json = await TestJson.Element(new { prop = value });
@@ -79,7 +79,7 @@ public class JsonElementHasEmptyPropertyCheckShould
     }
 
     [Fact]
-    public async Task WorkWhenNegated()
+    public async Task PassWhenNegatedWithNonEmptyArrayProperty()
     {
         var value = new[] { 1, 2 };
         var json = await TestJson.Element(new { prop = value });
@@ -90,7 +90,18 @@ public class JsonElementHasEmptyPropertyCheckShould
     }
 
     [Fact]
-    public async Task FailWhenNegatedAndPropertyActuallyHasEmptyProperty()
+    public async Task PassWhenNegatedWithNonEmptyStringProperty()
+    {
+        const string value = "foo";
+        var json = await TestJson.Element(new { prop = value });
+
+        Check
+            .That(json)
+            .Not.HasEmptyProperty("prop");
+    }
+
+    [Fact]
+    public async Task FailWhenNegatedWithEmptyArrayProperty()
     {
         var json = await TestJson.Element(new { prop = Array.Empty<int>() });
 
@@ -100,5 +111,18 @@ public class JsonElementHasEmptyPropertyCheckShould
                 "The property size is '0' whereas it must not.",
                 "The checked struct:",
                 "\t[{\"prop\":[]}]");
+    }
+
+    [Fact]
+    public async Task FailWhenNegatedWithEmptyStringProperty()
+    {
+        var json = await TestJson.Element(new { prop = "" });
+
+        Check.ThatCode(() => Check.That(json).Not.HasEmptyProperty("prop"))
+            .IsAFailingCheckWithMessage(
+                "",
+                "The property size is '0' whereas it must not.",
+                "The checked struct:",
+                "\t[{\"prop\":\"\"}]");
     }
 }

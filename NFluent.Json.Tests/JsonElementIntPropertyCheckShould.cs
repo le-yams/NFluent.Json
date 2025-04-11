@@ -6,7 +6,7 @@ namespace NFluent.Json.Tests;
 public class JsonElementIntPropertyCheckShould
 {
     [Fact]
-    public async Task HasIntPropertyWorksOnHavingPropertyWithExpectedValue()
+    public async Task PassWithExpectedValue()
     {
         const int expectedValue = 42;
         var json = await TestJson.Element(new { propA = expectedValue });
@@ -15,7 +15,33 @@ public class JsonElementIntPropertyCheckShould
     }
 
     [Fact]
-    public async Task HasIntPropertyFailingWhenPropertyIsUndefined()
+    public async Task PassWhenNegatedWithUndefinedProperty()
+    {
+        var json = await TestJson.Element(new { propA = "" });
+
+        Check.That(json).Not.HasIntProperty("propB", 42);
+    }
+
+    [Fact]
+    public async Task PassWhenNegatedWithWrongValue()
+    {
+        const int expectedValue = int.MaxValue;
+        const int notExpectedValue = expectedValue - 1;
+        var json = await TestJson.Element(new { propA = notExpectedValue });
+
+        Check.That(json).Not.HasIntProperty("propA", expectedValue);
+    }
+
+    [Fact]
+    public async Task PassWhenNegatedWithWrongKind()
+    {
+        var json = await TestJson.Element(new { propA = "42" });
+
+        Check.That(json).Not.HasIntProperty("propA", 42);
+    }
+
+    [Fact]
+    public async Task FailWhenPropertyIsUndefined()
     {
         var json = await TestJson.Element(new { propA = "" });
 
@@ -27,19 +53,7 @@ public class JsonElementIntPropertyCheckShould
     }
 
     [Fact]
-    public async Task HasIntPropertyFailingWhenPropertyIsNotANumber()
-    {
-        var json = await TestJson.Element(new { propA = "42" });
-
-        Check.ThatCode(() => Check.That(json).HasIntProperty("propA", 42)).IsAFailingCheckWithMessage(
-            "",
-            "The 'propA' property kind is not number.",
-            "The checked struct:",
-            "\t[{\"propA\":\"42\"}]");
-    }
-
-    [Fact]
-    public async Task HasIntPropertyFailingWhenPropertyHasWrongValue()
+    public async Task FailWithWrongValue()
     {
         const int expectedValue = 42;
         const int notExpectedValue = expectedValue + 1;
@@ -53,33 +67,19 @@ public class JsonElementIntPropertyCheckShould
     }
 
     [Fact]
-    public async Task HasIntPropertyCanBeNegateWithUndefinedProperty()
-    {
-        var json = await TestJson.Element(new { propA = "" });
-
-        Check.That(json).Not.HasIntProperty("propB", 42);
-    }
-
-    [Fact]
-    public async Task HasIntPropertyCanBeNegateWithWrongPropertyKind()
+    public async Task FailWhenNotANumber()
     {
         var json = await TestJson.Element(new { propA = "42" });
 
-        Check.That(json).Not.HasIntProperty("propA", 42);
+        Check.ThatCode(() => Check.That(json).HasIntProperty("propA", 42)).IsAFailingCheckWithMessage(
+            "",
+            "The 'propA' property kind is not number.",
+            "The checked struct:",
+            "\t[{\"propA\":\"42\"}]");
     }
 
     [Fact]
-    public async Task HasIntPropertyCanBeNegateWithWrongPropertyValue()
-    {
-        const int expectedValue = int.MaxValue;
-        const int notExpectedValue = expectedValue - 1;
-        var json = await TestJson.Element(new { propA = notExpectedValue });
-
-        Check.That(json).Not.HasIntProperty("propA", expectedValue);
-    }
-
-    [Fact]
-    public async Task HasIntPropertyNegationFailingWhenHavingThePropertyWithExpectedValue()
+    public async Task FailWhenNegatedWithExpectedValue()
     {
         const int expectedValue = 42;
         var json = await TestJson.Element(new { propA = expectedValue });
