@@ -19,6 +19,8 @@ Check.That(jsonElement7).HasFalseValue();
 Check.That(jsonElement7).HasGuidValue(expectedGuid);
 Check.That(jsonElement9).HasArrayValue(new[]{1, 2});
 Check.That(jsonElement10).HasArrayValueEquivalentTo(new[]{2, 1});
+Check.That(jsonElement11).HasSize(3); // works for string and array elements
+Check.That(jsonElement12).IsEmpty; // works for string and array elements
 ```
 
 
@@ -47,4 +49,14 @@ Check.That(jsonElement).HasNullProperty("nullProperty");
 Check.That(jsonElement).HasGuidProperty("guidProperty", expectedGuid);
 Check.That(jsonElement).HasArrayProperty("arrayProperty", new[] { 1, 2 });
 Check.That(jsonElement).HasArrayPropertyEquivalentTo("arrayProperty", new[] { 2, 1 });
+```
+
+
+## Check the size of a property
+
+```c#
+Check.That(jsonElement).HasProperty("arrayProperty").HasSize(4);
+Check.That(jsonElement).HasProperty("otherArrayProperty").IsEmpty;
+Check.That(jsonElement).HasProperty("stringProperty").HasSize(2);
+Check.That(jsonElement).HasProperty("otherStringProperty").IsEmpty;
 ```
