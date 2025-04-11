@@ -5,7 +5,7 @@ using NFluent.Kernel;
 
 namespace NFluent.Json;
 
-public static class JsonElementArrayPropertyCheckExtensions
+public static class JsonElementArrayCheckExtensions
 {
     /// <summary>
     /// Checks that the actual JsonElement array value is equal to the specified value (order matters).

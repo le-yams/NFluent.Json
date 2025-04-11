@@ -4,7 +4,7 @@ using NFluent.Kernel;
 
 namespace NFluent.Json;
 
-public static class JsonElementBoolPropertyCheckExtensions
+public static class JsonElementBoolCheckExtensions
 {
     /// <summary>
     /// Checks that the actual JsonElement boolean value is equal to the specified value.

@@ -1,11 +1,10 @@
 using System.Text.Json;
 using NFluent.Extensibility;
-using NFluent.Json.Internal;
 using NFluent.Kernel;
 
 namespace NFluent.Json;
 
-public static class JsonElementGuidPropertyCheckExtensions
+public static class JsonElementGuidCheckExtensions
 {
     /// <summary>
     /// Checks that the actual JsonElement Guid value is equal to the specified value.
