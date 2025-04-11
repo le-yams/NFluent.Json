@@ -20,7 +20,7 @@ public static class JsonElementPropertySizeCheckExtensions
     {
         ExtensibilityHelper.BeginCheck(check)
             .FailWhen(sut => sut.ValueKind != JsonValueKind.String && sut.ValueKind != JsonValueKind.Array,
-                "The property value is not a string nor an array.")
+                "The element is not a string nor an array.")
             .FailWhen(sut =>
                 {
                     var length = sut.ValueKind == JsonValueKind.String
@@ -28,8 +28,8 @@ public static class JsonElementPropertySizeCheckExtensions
                         : sut.GetArrayLength();
                     return !length.Equals(expectedValue);
                 },
-                $"The property size is not equal to the expected value '{expectedValue}'.")
-            .OnNegate($"The property size is '{expectedValue}' whereas it must not.").EndCheck();
+                $"The element size is not equal to the expected value '{expectedValue}'.")
+            .OnNegate($"The element size is '{expectedValue}' whereas it must not.").EndCheck();
         return ExtensibilityHelper.BuildCheckLink(check);
     }
 

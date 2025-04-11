@@ -47,7 +47,7 @@ public class JsonElementIntValueCheckShould
         Check.ThatCode(() => Check.That(json.GetProperty("prop")).HasIntValue(expectedValue))
             .IsAFailingCheckWithMessage(
                 "",
-                "The property value is not equal to the expected value 42.",
+                "The element is not equal to the expected value 42.",
                 "The checked struct:",
                 "\t[43]");
     }
@@ -61,7 +61,7 @@ public class JsonElementIntValueCheckShould
         Check.ThatCode(() => Check.That(json.GetProperty("prop")).HasIntValue(expectedValue))
             .IsAFailingCheckWithMessage(
                 "",
-                "The property value is not a number.",
+                "The element is not a number.",
                 "The checked struct:",
                 "\t[42]");
     }
@@ -75,7 +75,7 @@ public class JsonElementIntValueCheckShould
         Check.ThatCode(() => Check.That(json.GetProperty("prop")).Not.HasIntValue(expectedValue))
             .IsAFailingCheckWithMessage(
                 "",
-                $"The property value is equal to {expectedValue} whereas it must not.",
+                $"The element is equal to {expectedValue} whereas it must not.",
                 "The checked struct:",
                 $"\t[{expectedValue}]");
     }

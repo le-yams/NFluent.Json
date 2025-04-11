@@ -47,7 +47,7 @@ public class JsonElementLongValueCheckShould
         Check.ThatCode(() => Check.That(json.GetProperty("prop")).HasLongValue(expectedValue))
             .IsAFailingCheckWithMessage(
                 "",
-                "The property value is not equal to the expected value 42.",
+                "The element is not equal to the expected value 42.",
                 "The checked struct:",
                 "\t[43]");
     }
@@ -61,7 +61,7 @@ public class JsonElementLongValueCheckShould
         Check.ThatCode(() => Check.That(json.GetProperty("prop")).HasLongValue(expectedValue))
             .IsAFailingCheckWithMessage(
                 "",
-                "The property value is not a number.",
+                "The element is not a number.",
                 "The checked struct:",
                 "\t[42]");
     }
@@ -75,7 +75,7 @@ public class JsonElementLongValueCheckShould
         Check.ThatCode(() => Check.That(json.GetProperty("prop")).Not.HasLongValue(expectedValue))
             .IsAFailingCheckWithMessage(
                 "",
-                "The property value is equal to 42 whereas it must not.",
+                "The element is equal to 42 whereas it must not.",
                 "The checked struct:",
                 "\t[42]");
     }

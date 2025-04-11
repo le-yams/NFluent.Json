@@ -20,10 +20,10 @@ public static class JsonElementLongPropertyCheckExtensions
     {
         ExtensibilityHelper.BeginCheck(check)
             .FailWhen(sut => sut.ValueKind != JsonValueKind.Number,
-                "The property value is not a number.")
+                "The element is not a number.")
             .FailWhen(sut => sut.GetInt64() != expectedValue,
-                $"The property value is not equal to the expected value {expectedValue}.")
-            .OnNegate($"The property value is equal to {expectedValue} whereas it must not.")
+                $"The element is not equal to the expected value {expectedValue}.")
+            .OnNegate($"The element is equal to {expectedValue} whereas it must not.")
             .EndCheck();
         return ExtensibilityHelper.BuildCheckLink(check);
     }

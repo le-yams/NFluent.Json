@@ -115,7 +115,7 @@ public class JsonElementArrayValueCheckShould
         Check.ThatCode(() => Check.That(json.GetProperty("propA")).HasArrayValue(new[] { 1, 2 }))
             .IsAFailingCheckWithMessage(
                 "",
-                "The property value is not an array.",
+                "The element is not an array.",
                 "The checked struct:",
                 "\t[42]");
     }
@@ -129,7 +129,7 @@ public class JsonElementArrayValueCheckShould
         Check.ThatCode(() => Check.That(json.GetProperty("prop")).HasArrayValue(expectedValue))
             .IsAFailingCheckWithMessage(
                 "",
-                "The property value is not equal to the expected value [1,2].",
+                "The element is not equal to the expected value [1,2].",
                 "The checked struct:",
                 "\t[[1,2,3]]");
     }
@@ -143,7 +143,7 @@ public class JsonElementArrayValueCheckShould
         Check.ThatCode(() => Check.That(json.GetProperty("prop")).HasArrayValue(expectedValue))
             .IsAFailingCheckWithMessage(
                 "",
-                "The property value is not equal to the expected value [1,2].",
+                "The element is not equal to the expected value [1,2].",
                 "The checked struct:",
                 "\t[[3,4]]");
     }
@@ -161,7 +161,7 @@ public class JsonElementArrayValueCheckShould
         Check.ThatCode(() => Check.That(json.GetProperty("prop")).HasArrayValue(expectedValue))
             .IsAFailingCheckWithMessage(
                 "",
-                "The property value is not equal to the expected value [{\"id\":1,\"name\":\"foo\"},{\"id\":2,\"name\":\"bar\"}].",
+                "The element is not equal to the expected value [{\"id\":1,\"name\":\"foo\"},{\"id\":2,\"name\":\"bar\"}].",
                 "The checked struct:",
                 "\t[[{\"id\":2,\"name\":\"bar\"},{\"id\":1,\"name\":\"foo\"}]]");
     }
@@ -175,7 +175,7 @@ public class JsonElementArrayValueCheckShould
         Check.ThatCode(() => Check.That(json.GetProperty("prop")).Not.HasArrayValue(expectedValue))
             .IsAFailingCheckWithMessage(
                 "",
-                "The property value is equal to [1,2] whereas it must not.",
+                "The element is equal to [1,2] whereas it must not.",
                 "The checked struct:",
                 "\t[[1,2]]");
     }
@@ -189,7 +189,7 @@ public class JsonElementArrayValueCheckShould
         Check.ThatCode(() => Check.That(json.GetProperty("prop")).Not.HasArrayValue(expectedValue))
             .IsAFailingCheckWithMessage(
                 "",
-                "The property value is equal to [{\"id\":1},{\"id\":2}] whereas it must not.",
+                "The element is equal to [{\"id\":1},{\"id\":2}] whereas it must not.",
                 "The checked struct:",
                 "\t[[{\"id\":1},{\"id\":2}]]");
     }

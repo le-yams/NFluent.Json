@@ -43,7 +43,7 @@ public class JsonElementIsFalseCheckShould
         Check.ThatCode(() => Check.That(json.GetProperty("trueProp")).IsFalse())
             .IsAFailingCheckWithMessage(
                 "",
-                "The property kind is not false.",
+                "The element is not false.",
                 "The checked struct:",
                 "\t[True]");
     }
@@ -56,7 +56,7 @@ public class JsonElementIsFalseCheckShould
         Check.ThatCode(() => Check.That(json.GetProperty("stringProp")).IsFalse())
             .IsAFailingCheckWithMessage(
                 "",
-                "The property kind is not false.",
+                "The element is not false.",
                 "The checked struct:",
                 "\t[42]");
     }
@@ -69,7 +69,7 @@ public class JsonElementIsFalseCheckShould
         Check.ThatCode(() => Check.That(json.GetProperty("falseProp")).Not.IsFalse())
             .IsAFailingCheckWithMessage(
                 "",
-                "The property kind is false whereas it must not.",
+                "The element is false whereas it must not.",
                 "The checked struct:",
                 "\t[False]");
     }
