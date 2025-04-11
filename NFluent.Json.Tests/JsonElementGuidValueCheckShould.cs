@@ -6,7 +6,7 @@ namespace NFluent.Json.Tests;
 public class JsonElementGuidValueCheckShould
 {
     [Fact]
-    public async Task HasGuidValueWorks()
+    public async Task PassWithExpectedValue()
     {
         var expectedValue = Guid.NewGuid();
         var json = await TestJson.Element(new { prop = expectedValue });
@@ -17,7 +17,28 @@ public class JsonElementGuidValueCheckShould
     }
 
     [Fact]
-    public async Task HasGuidValueFailingWhenPropertyIsNotExpectedValue()
+    public async Task PassWhenNegatedWithWrongValue()
+    {
+        var expectedValue = Guid.NewGuid();
+        var json = await TestJson.Element(new { prop = Guid.NewGuid() });
+
+        Check
+            .That(json.GetProperty("prop"))
+            .Not.HasGuidValue(expectedValue);
+    }
+
+    [Fact]
+    public async Task PassWhenNegatedWithWrongKind()
+    {
+        var json = await TestJson.Element(new { prop = "not a guid" });
+
+        Check
+            .That(json.GetProperty("prop"))
+            .Not.HasGuidValue(Guid.NewGuid());
+    }
+
+    [Fact]
+    public async Task FailWithWrongValue()
     {
         var expectedValue = Guid.NewGuid();
         var json = await TestJson.Element(new { prop = Guid.NewGuid() });
@@ -31,32 +52,21 @@ public class JsonElementGuidValueCheckShould
     }
 
     [Fact]
-    public async Task HasGuidValueFailingWhenPropertyIsWrongKind()
+    public async Task FailWhenNotAGuid()
     {
         var expectedValue = Guid.NewGuid();
-        var json = await TestJson.Element(new { prop = 42 });
+        var json = await TestJson.Element(new { prop = "not a guid" });
 
         Check.ThatCode(() => Check.That(json.GetProperty("prop")).HasGuidValue(expectedValue))
             .IsAFailingCheckWithMessage(
                 "",
                 "The property value is not a Guid.",
                 "The checked struct:",
-                "\t[42]");
+                "\t[not a guid]");
     }
 
     [Fact]
-    public async Task HasGuidValueCanBeNegate()
-    {
-        var expectedValue = Guid.NewGuid();
-        var json = await TestJson.Element(new { prop = Guid.NewGuid() });
-
-        Check
-            .That(json.GetProperty("prop"))
-            .Not.HasGuidValue(expectedValue);
-    }
-
-    [Fact]
-    public async Task HasIntValueNegationFailingWhenPropertyIsOfSpecifiedKind()
+    public async Task FailWhenNegatedWithExpectedValue()
     {
         var expectedValue = Guid.NewGuid();
         var json = await TestJson.Element(new { prop = expectedValue });

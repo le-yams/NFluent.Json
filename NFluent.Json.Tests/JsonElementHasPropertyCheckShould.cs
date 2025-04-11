@@ -4,10 +4,10 @@ using Xunit;
 
 namespace NFluent.Json.Tests;
 
-public class JsonElementPropertyCheckShould
+public class JsonElementHasPropertyCheckShould
 {
     [Fact]
-    public async Task HasPropertyWorksOnHavingProperty()
+    public async Task PassWhenPropertyIsPresent()
     {
         var json = await TestJson.Element(new { propA = "" });
 
@@ -15,7 +15,7 @@ public class JsonElementPropertyCheckShould
     }
 
     [Fact]
-    public async Task HasPropertyFailingWhenPropertyIsMissing()
+    public async Task FailWhenPropertyIsMissing()
     {
         var json = await TestJson.Element(new { propA = "" });
 
@@ -27,7 +27,7 @@ public class JsonElementPropertyCheckShould
     }
 
     [Fact]
-    public async Task HasPropertyCanBeNegate()
+    public async Task PassWhenNegatedWithMissingProperty()
     {
         var json = await TestJson.Element(new { propA = "" });
 
@@ -35,7 +35,7 @@ public class JsonElementPropertyCheckShould
     }
 
     [Fact]
-    public async Task HasPropertyNegationFailingWhenPropertyIsPresent()
+    public async Task FailWhenNegatedWithPresentProperty()
     {
         var json = await TestJson.Element(new { propA = "" });
 
@@ -47,7 +47,7 @@ public class JsonElementPropertyCheckShould
     }
 
     [Fact]
-    public async Task HasPropertyWithKindWorks()
+    public async Task PassWhenPropertyHasExpectedKind()
     {
         var json = await TestJson.Element(new
         {
@@ -73,7 +73,7 @@ public class JsonElementPropertyCheckShould
     }
 
     [Fact]
-    public async Task HasPropertyWithKindFailingWhenPropertyHasWrongKind()
+    public async Task FailWhenPropertyHasNotExpectedKind()
     {
         var json = await TestJson.Element(new { prop = "" });
 
@@ -85,7 +85,7 @@ public class JsonElementPropertyCheckShould
     }
 
     [Fact]
-    public async Task HasPropertyWithKindCanBeNegate()
+    public async Task PassWhenNegatedAndPropertyHasNotExpectedKind()
     {
         var json = await TestJson.Element(new { stringProp = "" });
 
@@ -97,7 +97,7 @@ public class JsonElementPropertyCheckShould
     }
 
     [Fact]
-    public async Task HasPropertyWithKindNegationFailingWhenPropertyHasWrongKind()
+    public async Task FailWhenNegatedAndPropertyHasExpectedKind()
     {
         var json = await TestJson.Element(new { stringProp = "" });
 

@@ -18,7 +18,7 @@ public class JsonElementHasPropertyWithSizeCheckShould
     }
 
     [Fact]
-    public async Task WorksWithStringProperty()
+    public async Task PassWithStringProperty()
     {
         const string value = "foo";
         var json = await TestJson.Element(new { prop = value });
@@ -29,7 +29,7 @@ public class JsonElementHasPropertyWithSizeCheckShould
     }
 
     [Fact]
-    public async Task WorksWithArrayProperty()
+    public async Task PassWithArrayProperty()
     {
         var value = new[] { 1, 2 };
         var json = await TestJson.Element(new { prop = value });
@@ -40,7 +40,29 @@ public class JsonElementHasPropertyWithSizeCheckShould
     }
 
     [Fact]
-    public async Task FailWhenPropertyIsArrayWithDifferentLength()
+    public async Task PassWhenNegatedWithArrayWrongSize()
+    {
+        var value = new[] { 1, 2 };
+        var json = await TestJson.Element(new { prop = value.Concat(new[] { 3 }) });
+
+        Check
+            .That(json)
+            .Not.HasPropertyWithSize("prop", value.Length);
+    }
+
+    [Fact]
+    public async Task PassWhenNegatedWithStringWrongSize()
+    {
+        const string value = "foo";
+        var json = await TestJson.Element(new { prop = value + "bar" });
+
+        Check
+            .That(json)
+            .Not.HasPropertyWithSize("prop", value.Length);
+    }
+
+    [Fact]
+    public async Task FailWhenPropertyIsArrayWithDifferentSize()
     {
         var value = new[] { 1, 2 };
         var json = await TestJson.Element(new { prop = value.Concat(new[] { 3 }) });
@@ -54,7 +76,7 @@ public class JsonElementHasPropertyWithSizeCheckShould
     }
 
     [Fact]
-    public async Task FailWhenPropertyIsStringWithDifferentLength()
+    public async Task FailWhenPropertyIsStringWithDifferentSize()
     {
         const string value = "foo";
         var json = await TestJson.Element(new { prop = $"not{value}" });
@@ -81,18 +103,7 @@ public class JsonElementHasPropertyWithSizeCheckShould
     }
 
     [Fact]
-    public async Task WorkWhenNegated()
-    {
-        var value = new[] { 1, 2 };
-        var json = await TestJson.Element(new { prop = value.Concat(new[] { 3 }) });
-
-        Check
-            .That(json)
-            .Not.HasPropertyWithSize("prop", value.Length);
-    }
-
-    [Fact]
-    public async Task HasPropertyWithSizeNegationFailingWithSameSize()
+    public async Task FailWhenNegatedWithExpectedArraySize()
     {
         var value = new[] { 1, 2 };
         var json = await TestJson.Element(new { prop = value });
@@ -103,5 +114,19 @@ public class JsonElementHasPropertyWithSizeCheckShould
                 "The property size is '2' whereas it must not.",
                 "The checked struct:",
                 "\t[{\"prop\":[1,2]}]");
+    }
+
+    [Fact]
+    public async Task FailWhenNegatedWithExpectedStringSize()
+    {
+        const string value = "foo";
+        var json = await TestJson.Element(new { prop = value });
+
+        Check.ThatCode(() => Check.That(json).Not.HasPropertyWithSize("prop", value.Length))
+            .IsAFailingCheckWithMessage(
+                "",
+                "The property size is '3' whereas it must not.",
+                "The checked struct:",
+                "\t[{\"prop\":\"foo\"}]");
     }
 }

@@ -7,7 +7,6 @@ namespace NFluent.Json;
 
 public static class JsonElementPropertyCheckExtensions
 {
-
     /// <summary>
     /// Checks that the actual JsonElement has the specified property.
     /// </summary>

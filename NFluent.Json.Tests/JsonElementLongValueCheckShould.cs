@@ -6,7 +6,7 @@ namespace NFluent.Json.Tests;
 public class JsonElementLongValueCheckShould
 {
     [Fact]
-    public async Task HasLongValueWorks()
+    public async Task PassWithExpectedValue()
     {
         const long expectedValue = long.MaxValue;
         var json = await TestJson.Element(new { prop = expectedValue });
@@ -17,7 +17,29 @@ public class JsonElementLongValueCheckShould
     }
 
     [Fact]
-    public async Task HasLongValueFailingWhenPropertyIsNotExpectedValue()
+    public async Task PassWhenNegatedWithWrongValue()
+    {
+        const int expectedValue = 42;
+        var json = await TestJson.Element(new { prop = expectedValue + 1 });
+
+        Check
+            .That(json.GetProperty("prop"))
+            .Not.HasLongValue(expectedValue);
+    }
+
+    [Fact]
+    public async Task PassWhenNegatedWithWrongKind()
+    {
+        const int expectedValue = 42;
+        var json = await TestJson.Element(new { prop = expectedValue.ToString() });
+
+        Check
+            .That(json.GetProperty("prop"))
+            .Not.HasLongValue(expectedValue);
+    }
+
+    [Fact]
+    public async Task FailWithWrongValue()
     {
         const long expectedValue = 42;
         var json = await TestJson.Element(new { prop = expectedValue + 1 });
@@ -31,7 +53,7 @@ public class JsonElementLongValueCheckShould
     }
 
     [Fact]
-    public async Task HasLongValueFailingWhenPropertyIsWrongKind()
+    public async Task FailWhenNotANumber()
     {
         const int expectedValue = 42;
         var json = await TestJson.Element(new { prop = "42" });
@@ -45,18 +67,7 @@ public class JsonElementLongValueCheckShould
     }
 
     [Fact]
-    public async Task HasLongValueCanBeNegate()
-    {
-        const int expectedValue = 42;
-        var json = await TestJson.Element(new { prop = expectedValue + 1 });
-
-        Check
-            .That(json.GetProperty("prop"))
-            .Not.HasLongValue(expectedValue);
-    }
-
-    [Fact]
-    public async Task HasLongValueNegationFailingWhenPropertyIsOfSpecifiedKind()
+    public async Task FailWhenNegatedWithExpectedValue()
     {
         const int expectedValue = 42;
         var json = await TestJson.Element(new { prop = expectedValue });
