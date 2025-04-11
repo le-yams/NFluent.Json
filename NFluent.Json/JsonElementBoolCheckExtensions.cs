@@ -27,32 +27,6 @@ public static class JsonElementBoolCheckExtensions
     }
 
     /// <summary>
-    /// Checks that the actual JsonElement boolean value is true.
-    /// </summary>
-    /// <param name="check">The fluent check to be extended.</param>
-    /// <returns>
-    /// A check link.
-    /// </returns>
-    /// <exception cref="FluentCheckException">The actual element value is false.</exception>
-    public static ICheckLink<ICheck<JsonElement>> HasTrueValue(this ICheck<JsonElement> check)
-    {
-        return check.HasBoolValue(true);
-    }
-
-    /// <summary>
-    /// Checks that the actual JsonElement boolean value is false.
-    /// </summary>
-    /// <param name="check">The fluent check to be extended.</param>
-    /// <returns>
-    /// A check link.
-    /// </returns>
-    /// <exception cref="FluentCheckException">The actual element value is true.</exception>
-    public static ICheckLink<ICheck<JsonElement>> HasFalseValue(this ICheck<JsonElement> check)
-    {
-        return check.HasBoolValue(false);
-    }
-
-    /// <summary>
     /// Checks that the actual JsonElement has the specified boolean property with the expected value.
     /// </summary>
     /// <param name="check">The fluent check to be extended.</param>
