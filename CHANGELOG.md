@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.1.0](https://github.com/le-yams/NFluent.Json/compare/v2.0.0...v2.1.0) (2025-04-24)
+
+
+### Features
+
+* check string ignoring case ([682c765](https://github.com/le-yams/NFluent.Json/commit/682c765405dc3f15798504306d10aadc776110e7))
+
 ## [2.0.0](https://github.com/le-yams/NFluent.Json/compare/v1.3.0...v2.0.0) (2025-04-11)
 
 
