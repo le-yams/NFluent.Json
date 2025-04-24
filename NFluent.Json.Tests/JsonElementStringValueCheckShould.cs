@@ -17,6 +17,17 @@ public class JsonElementStringValueCheckShould
     }
 
     [Fact]
+    public async Task PassIgnoringCase()
+    {
+        const string value = "foo";
+        var json = await TestJson.Element(new { stringProp = value.ToLowerInvariant() });
+
+        Check
+            .That(json.GetProperty("stringProp"))
+            .HasStringValue(value.ToUpperInvariant(), StringComparison.OrdinalIgnoreCase);
+    }
+
+    [Fact]
     public async Task PassWhenNegatedWithWrongValue()
     {
         const string expectedValue = "42";
@@ -78,5 +89,19 @@ public class JsonElementStringValueCheckShould
                 "The element is equal to '42' whereas it must not.",
                 "The checked struct:",
                 "\t[42]");
+    }
+
+    [Fact]
+    public async Task FailWhenNegatedWithWithCaseInsensitiveValue()
+    {
+        const string value = "foo";
+        var json = await TestJson.Element(new { stringProp = value.ToLowerInvariant() });
+
+        Check.ThatCode(() => Check.That(json.GetProperty("stringProp")).Not.HasStringValue(value.ToUpperInvariant(), StringComparison.OrdinalIgnoreCase))
+            .IsAFailingCheckWithMessage(
+                "",
+                "The element is equal to 'FOO' whereas it must not (comparison type OrdinalIgnoreCase).",
+                "The checked struct:",
+                "\t[foo]");
     }
 }
