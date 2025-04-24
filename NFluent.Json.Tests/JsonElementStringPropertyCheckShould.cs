@@ -15,6 +15,16 @@ public class JsonElementStringPropertyCheckShould
     }
 
     [Fact]
+    public async Task PassIgnoringCase()
+    {
+        const string value = "foo";
+        var json = await TestJson.Element(new { propA = value.ToLowerInvariant() });
+
+        Check
+            .That(json).HasStringProperty("propA", value.ToUpperInvariant(), StringComparison.OrdinalIgnoreCase);
+    }
+
+    [Fact]
     public async Task PassWhenNegatedWithUndefinedProperty()
     {
         var json = await TestJson.Element(new { propA = "" });
@@ -84,8 +94,24 @@ public class JsonElementStringPropertyCheckShould
 
         Check.ThatCode(() => Check.That(json).Not.HasStringProperty("propA", expectedValue)).IsAFailingCheckWithMessage(
             "",
-            $"The property 'propA' is present and has value '{expectedValue}' whereas it must not.",
+            $"The property 'propA' is present and has value equal to '{expectedValue}' whereas it must not.",
             "The checked struct:",
             $"\t[{{\"propA\":\"{expectedValue}\"}}]");
+    }
+
+    [Fact]
+    public async Task FailWhenNegatedWithWithCaseInsensitiveValue()
+    {
+        const string value = "foo";
+        var json = await TestJson.Element(new { propA = value.ToLowerInvariant() });
+        var expectedValue = value.ToUpperInvariant();
+
+        Check.ThatCode(() => Check.That(json).Not
+                .HasStringProperty("propA", expectedValue, StringComparison.OrdinalIgnoreCase))
+            .IsAFailingCheckWithMessage(
+                "",
+                $"The property 'propA' is present and has value equal to '{expectedValue}' whereas it must not (comparison type OrdinalIgnoreCase).",
+                "The checked struct:",
+                $"\t[{{\"propA\":\"{value}\"}}]");
     }
 }
