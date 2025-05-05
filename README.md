@@ -62,3 +62,19 @@ Check.That(jsonElement).HasProperty("otherArrayProperty").IsEmpty;
 Check.That(jsonElement).HasProperty("stringProperty").HasSize(2);
 Check.That(jsonElement).HasProperty("otherStringProperty").IsEmpty;
 ```
+
+## Utility methods
+
+### Find JsonElement inner element with JSON path
+
+The JsonElement extension methods `GetElementAt` and `GetRequiredElementAt` allow you to retrieve a specific inner element using a [JSON path](https://www.rfc-editor.org/rfc/rfc9535.html) expression.
+
+```c#
+var foo = jsonElement.GetElementAt("$.foo"); // foo can be null if no element is found
+var bar = jsonElement.GetRequiredElementAt("$.bar"); // bar cannot be null (throws if no element is found)
+```
+
+> Note that it supports simplified expressions making the `$` and `$.` suffixes optional.
+> For example, the following expressions are equivalent:
+>  * `$.foo.bar` can be written as `.foo.bar` or `foo.bar`
+>  * `$[0].foo` can be written as `[0].foo`
