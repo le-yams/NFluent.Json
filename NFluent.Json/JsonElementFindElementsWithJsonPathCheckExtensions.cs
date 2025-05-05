@@ -101,4 +101,36 @@ public static class JsonElementFindElementsWithJsonPathCheckExtensions
             .EndCheck();
         return ExtensibilityHelper.BuildCheckLink(check);
     }
+    /// <summary>
+    /// Checks that the specified number of elements exist in the JsonElement using the specified JSON path query.
+    /// </summary>
+    /// <param name="check">The fluent check to be extended.</param>
+    /// <param name="query">the JSON path query</param>
+    ///  <param name="expectedCount">the expected number of elements</param>
+    /// <returns>
+    /// A check link.
+    /// </returns>
+    /// <exception cref="FluentCheckException">The number of found elements with the specified query is different from the expected one.</exception>
+    public static ICheckLink<ICheck<JsonElement>> HasElementsCountAt(this ICheck<JsonElement> check, string query, int expectedCount)
+    {
+        ExtensibilityHelper.BeginCheck(check)
+            .Analyze((element, c) =>
+            {
+                try
+                {
+                    var actualCount = element.CountElementsAt(query);
+                    if (actualCount != expectedCount)
+                    {
+                        c.Fail($"found {actualCount} elements at 'a.c' but was expecting {expectedCount}.");
+                    }
+                }
+                catch (Exception e)
+                {
+                    c.Fail(e.Message);
+                }
+            })
+            .OnNegate($"found {expectedCount} elements at 'a.c' whereas it must not.")
+            .EndCheck();
+        return ExtensibilityHelper.BuildCheckLink(check);
+    }
 }
