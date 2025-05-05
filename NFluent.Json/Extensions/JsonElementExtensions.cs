@@ -43,6 +43,13 @@ public static class JsonElementExtensions
         };
     }
 
+    internal static int CountElementsAt(this JsonElement element, string query)
+    {
+        var p = ParseQuery(query);
+        var result = p.Evaluate(element.AsNode());
+        return result.Matches.Count;
+    }
+
     private static JsonPath ParseQuery(string query)
     {
         if (string.IsNullOrWhiteSpace(query))
