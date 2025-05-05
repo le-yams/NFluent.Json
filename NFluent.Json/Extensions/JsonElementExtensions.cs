@@ -62,20 +62,20 @@ public static class JsonElementExtensions
         }
     }
 
-    private static string AddQueryMandatorySuffixIfMissing(string location)
+    private static string AddQueryMandatorySuffixIfMissing(string query)
     {
-        var firstChar = location[0];
+        var firstChar = query[0];
         if (firstChar != '$' && firstChar != '[' && firstChar != '.')
         {
-            location = $".{location}";
+            query = $".{query}";
         }
 
-        firstChar = location[0];
+        firstChar = query[0];
         if (firstChar != '$')
         {
-            location = $"${location}";
+            query = $"${query}";
         }
 
-        return location;
+        return query;
     }
 }
