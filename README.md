@@ -69,6 +69,7 @@ Check.That(jsonElement).HasProperty("otherStringProperty").IsEmpty;
 ```c#
 Check.That(jsonElement).HasSingleElementAt("$.foo.bar");
 Check.That(jsonElement).HasAtleastOneElementAt("$.foo.array[*]");
+Check.That(jsonElement).HasMultipleElementsAt("$.foo.otherArray[*]");
 ```
 
 > Note that it supports simplified expressions making the `$` and `$.` suffixes optional.
