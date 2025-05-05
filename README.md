@@ -78,3 +78,19 @@ var bar = jsonElement.GetRequiredElementAt("$.bar"); // bar cannot be null (thro
 > For example, the following expressions are equivalent:
 >  * `$.foo.bar` can be written as `.foo.bar` or `foo.bar`
 >  * `$[0].foo` can be written as `[0].foo`
+
+
+### Read JsonElement from HttpContent
+
+The `ReadJsonRootElementAsync` extension method allows you to read a `JsonElement` from a `HttpContent` object.
+
+```c#
+var requestJson = await httpRequestMessage.Content.ReadJsonRootElementAsync();
+
+Check.That(requestJson).HasIntProperty("foo", 42);    
+```
+```c#
+var responseJson = await httpResponseMessage.Content.ReadJsonElementAsync();
+
+Check.That(responseJson).HasArrayValueEquivalentTo(new []{ 1, 2, 3 });
+```
