@@ -9,6 +9,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <PackageReference Include="JsonPath.Net" Version="2.1.1" />
       <PackageReference Include="NFluent" Version="3.0.3" />
     </ItemGroup>
 
