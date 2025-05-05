@@ -63,6 +63,20 @@ Check.That(jsonElement).HasProperty("stringProperty").HasSize(2);
 Check.That(jsonElement).HasProperty("otherStringProperty").IsEmpty;
 ```
 
+
+## Check element(s) presence using JSON path
+
+```c#
+Check.That(jsonElement).HasSingleElementAt("$.foo.bar");
+```
+
+> Note that it supports simplified expressions making the `$` and `$.` suffixes optional.
+> For example, the following expressions are equivalent:
+>  * `$.foo.bar` can be written as `.foo.bar` or `foo.bar`
+>  * `$[0].foo` can be written as `[0].foo`
+
+> see also [Find JsonElement inner element with JSON path](#find-jsonelement-inner-element-with-json-path)
+
 ## Utility methods
 
 ### Find JsonElement inner element with JSON path
