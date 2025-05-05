@@ -107,6 +107,6 @@ public class ExtensionGetElementAtShould
         var thrown = Assert.Throws<JsonException>(() => json.GetElementAt("$.array[*].a"));
 
         // Assert
-        Check.That(thrown.Message).Contains("Found more than one element at path '$.array[*].a'.");
+        Check.That(thrown.Message).Contains("Found more than one element at '$.array[*].a'.");
     }
 }

@@ -5,7 +5,7 @@ using Xunit;
 
 namespace NFluent.Json.Tests;
 
-public class ExtensionRequireElementAtShould
+public class ExtensionGetRequiredElementAtShould
 {
     [Theory]
     [InlineData("$.a.b", "$.a.b.c")]
@@ -26,8 +26,8 @@ public class ExtensionRequireElementAtShould
         });
 
         // Act
-        var b = json.RequireElementAt(pathB);
-        var c = json.RequireElementAt(pathC);
+        var b = json.GetRequiredElementAt(pathB);
+        var c = json.GetRequiredElementAt(pathC);
 
         // Assert
         Check.That(b).HasIntProperty("c", 1);
@@ -55,8 +55,8 @@ public class ExtensionRequireElementAtShould
         });
 
         // Act
-        var b = json.RequireElementAt(pathB);
-        var c = json.RequireElementAt(pathC);
+        var b = json.GetRequiredElementAt(pathB);
+        var c = json.GetRequiredElementAt(pathC);
 
         // Assert
         Check.That(b).HasIntProperty("c", 1);
@@ -68,13 +68,13 @@ public class ExtensionRequireElementAtShould
     [InlineData("")]
     [InlineData("$.a.")]
     [InlineData("$.a[boom]")]
-    public async Task FailWithInvalidJsonPath(string invalidPath)
+    public async Task FailWithInvalidJsonPathQuery(string invalidQuery)
     {
         // Arrange
         var json = await TestJson.Element(new { });
 
         // Act & Assert
-        Assert.Throws<InvalidPathException>(() => json.RequireElementAt(invalidPath));
+        Assert.Throws<InvalidPathException>(() => json.GetRequiredElementAt(invalidQuery));
     }
 
     [Fact]
@@ -84,10 +84,10 @@ public class ExtensionRequireElementAtShould
         var json = await TestJson.Element(new { });
 
         // Act & Assert
-        var thrown = Assert.Throws<JsonException>(() => json.RequireElementAt("$.notExistingPath"));
+        var thrown = Assert.Throws<JsonException>(() => json.GetRequiredElementAt("$.notExistingPath"));
 
         // Assert
-        Check.That(thrown.Message).Contains("Expected at least one element at path '$.notExistingPath'.");
+        Check.That(thrown.Message).Contains("No element found at '$.notExistingPath'.");
     }
 
     [Fact]
@@ -104,9 +104,9 @@ public class ExtensionRequireElementAtShould
         });
 
         // Act & Assert
-        var thrown = Assert.Throws<JsonException>(() => json.RequireElementAt("$.array[*].a"));
+        var thrown = Assert.Throws<JsonException>(() => json.GetRequiredElementAt("$.array[*].a"));
 
         // Assert
-        Check.That(thrown.Message).Contains("Found more than one element at path '$.array[*].a'.");
+        Check.That(thrown.Message).Contains("Found more than one element at '$.array[*].a'.");
     }
 }
