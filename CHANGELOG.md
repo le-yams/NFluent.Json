@@ -1,5 +1,17 @@
 # Changelog
 
+## [2.2.0](https://github.com/le-yams/NFluent.Json/compare/v2.1.0...v2.2.0) (2025-05-07)
+
+
+### Features
+
+* check HasAtLeastOneElementAt ([4113e27](https://github.com/le-yams/NFluent.Json/commit/4113e27764814803aa9735568f0f3398f6cd0fff))
+* check HasElementsCountAt ([2aa3e58](https://github.com/le-yams/NFluent.Json/commit/2aa3e58bd338f61cc364807c56d371bc3c6c4a26))
+* check HasMultipleElementsAt ([734118e](https://github.com/le-yams/NFluent.Json/commit/734118ea7ca7b950c41e8220360c0e44f4c9bac8))
+* check HasSingleElementAt ([32309f2](https://github.com/le-yams/NFluent.Json/commit/32309f28ca3426389f112d4afe14ff3b2e9c7a51))
+* find element with json path utility methods ([#26](https://github.com/le-yams/NFluent.Json/issues/26)) ([3533120](https://github.com/le-yams/NFluent.Json/commit/353312094977be8fa0ccde886fe709caa6ec75ae))
+* read HttpContent as JsonElement utility method ([#29](https://github.com/le-yams/NFluent.Json/issues/29)) ([fd1fb4f](https://github.com/le-yams/NFluent.Json/commit/fd1fb4ff8a54bef2998b9f00b4d100b49dd74733))
+
 ## [2.1.0](https://github.com/le-yams/NFluent.Json/compare/v2.0.0...v2.1.0) (2025-04-24)
 
 
